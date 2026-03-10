@@ -31,6 +31,7 @@ public class UrlService {
 
     private String createUniqueShortCode() {
         String shortCode;
+        // Retry until the generated code does not collide with an existing record.
         do {
             shortCode = generateShortCode();
         } while (urlRepository.existsByShortCode(shortCode));
@@ -38,6 +39,7 @@ public class UrlService {
     }
 
     private String generateShortCode() {
+        // Base62 alphabet keeps codes short and URL-friendly.
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder shortCode = new StringBuilder();
         for (int i = 0; i < 6; i++) {
@@ -48,6 +50,7 @@ public class UrlService {
     }
 
     public UrlDTO.UrlResponse createShortUrl(UrlDTO.CreateRequest  request) {
+        // Apply configured default when request does not define expiration.
         int days = request.getExpirationDays() != null
                 ? request.getExpirationDays()
                 : defaultExpirationDays;
@@ -72,6 +75,7 @@ public class UrlService {
             throw new UrlExpiredException(shortCode);
         }
 
+        // Count only successful redirects for active URLs.
         url.setClickCount(url.getClickCount() + 1);
         urlRepository.save(url);
         return url.getOriginalUrl();
@@ -96,6 +100,7 @@ public class UrlService {
         response.setShortCode(url.getShortCode());
         response.setClickCount(url.getClickCount());
         response.setCreatedAt(url.getCreatedAt().format(formatter));
+        // Can be negative if the URL has just expired and cleanup has not run yet.
         response.setDaysUntilExpiry(ChronoUnit.DAYS.between(LocalDateTime.now(), url.getExpiresAt()));
 
         return response;

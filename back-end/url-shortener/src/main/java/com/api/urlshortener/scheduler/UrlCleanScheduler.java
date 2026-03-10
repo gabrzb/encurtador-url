@@ -6,17 +6,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class UrlCleanScheduler {
     private final UrlRepository urlRepository;
+    private static final ZoneId SCHEDULER_ZONE = ZoneId.of("UTC");
 
-    // Executa diariamente às 3h da manhã para evitar sobrecarga durante horários de pico
-    @Scheduled(cron = "0 0 3 * * *")
+    // Daily cleanup to prevent expired URLs from growing the table indefinitely.
+    // Cron runs at 03:00 every day in UTC.
+    @Scheduled(cron = "0 0 3 * * *", zone = "UTC")
     @Transactional
     public void deleteExpiredUrls() {
-        urlRepository.deleteByExpiresAtBefore(LocalDateTime.now());
+        LocalDateTime cutoff = ZonedDateTime.now(SCHEDULER_ZONE).toLocalDateTime();
+        urlRepository.deleteByExpiresAtBefore(cutoff);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+// Enables periodic jobs such as expired URL cleanup.
 @EnableScheduling
 public class UrlShortenerApplication {
 
