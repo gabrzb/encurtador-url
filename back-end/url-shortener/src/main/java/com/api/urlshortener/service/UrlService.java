@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UrlService {
     private final UrlRepository urlRepository;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     @Value("${app.base-url:http://localhost:8080}")
     private String baseUrl;
@@ -43,7 +44,7 @@ public class UrlService {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder shortCode = new StringBuilder();
         for (int i = 0; i < 6; i++) {
-            int index = secureRandom.nextInt(chars.length());;
+            int index = secureRandom.nextInt(chars.length());
             shortCode.append(chars.charAt(index));
         }
         return shortCode.toString();
@@ -90,16 +91,15 @@ public class UrlService {
     }
 
     private UrlDTO.UrlResponse toResponse(Url url) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         UrlDTO.UrlResponse response = new UrlDTO.UrlResponse();
 
         response.setShortUrl(baseUrl + "/"+ url.getShortCode());
         response.setOriginalUrl(url.getOriginalUrl());
-        response.setExpiresAt(url.getExpiresAt().format(formatter));
+        response.setExpiresAt(url.getExpiresAt().format(DATE_TIME_FORMATTER));
 
         response.setShortCode(url.getShortCode());
         response.setClickCount(url.getClickCount());
-        response.setCreatedAt(url.getCreatedAt().format(formatter));
+        response.setCreatedAt(url.getCreatedAt().format(DATE_TIME_FORMATTER));
         // Can be negative if the URL has just expired and cleanup has not run yet.
         response.setDaysUntilExpiry(ChronoUnit.DAYS.between(LocalDateTime.now(), url.getExpiresAt()));
 
