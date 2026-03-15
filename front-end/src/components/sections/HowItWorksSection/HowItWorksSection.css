@@ -1,0 +1,10 @@
+@media (max-width: 767px) {
+  .step-divider-v {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-mid);
+  }
+
+  .step-col {
+    padding: 1.5rem 0 !important;
+  }
+}

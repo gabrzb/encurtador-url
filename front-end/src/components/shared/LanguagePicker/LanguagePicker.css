@@ -1,0 +1,39 @@
+#lang-btn:hover {
+  transform: scale(1.08);
+}
+
+#lang-btn:active {
+  transform: scale(0.95);
+}
+
+#lang-dropdown.closed {
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+}
+
+#lang-dropdown.open {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.lang-opt {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text-1);
+  transition: background 0.15s ease;
+}
+
+.lang-opt:hover {
+  background: rgba(128, 128, 128, 0.08);
+}

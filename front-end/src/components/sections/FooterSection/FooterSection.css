@@ -1,0 +1,8 @@
+.social-btn {
+  transition: background 0.15s ease;
+  background: var(--bg-social);
+}
+
+.social-btn:hover {
+  filter: brightness(0.9);
+}
