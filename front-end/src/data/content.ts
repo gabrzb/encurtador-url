@@ -5,9 +5,10 @@ export const content: ContentData = {
   languageAriaLabel: 'Idioma',
   themeToggleAriaLabel: 'Alternar tema',
   githubLabel: 'GitHub',
+  githubUrl: 'https://github.com/gabri/encurtador-url',
   loginLabel: 'Entrar',
   menuLabel: 'Menu',
-  closeLabel: 'Close',
+  closeLabel: 'Fechar',
   pageHeading: 'Página',
   companyHeading: 'Empresa',
   pageMenu: [
@@ -108,23 +109,38 @@ export const content: ContentData = {
     columns: [
       {
         title: 'Produto',
-        links: ['Encurtador', 'Analytics', 'Links customizados', 'QR Code'],
+        links: [
+          { href: '#', label: 'Encurtador' },
+          { href: '#', label: 'Analytics' },
+          { href: '#', label: 'Links customizados' },
+          { href: '#', label: 'QR Code' },
+        ],
       },
       {
         title: 'Empresa',
-        links: ['Sobre nós', 'Blog', 'Carreiras', 'Contato'],
+        links: [
+          { href: '/sobre', label: 'Sobre nós' },
+          { href: '#', label: 'Blog' },
+          { href: '#', label: 'Carreiras' },
+          { href: '/contato', label: 'Contato' },
+        ],
       },
       {
         title: 'Developers',
-        links: ['Partner API', 'Documentação', 'Status', 'Knowledge Base'],
+        links: [
+          { href: '#', label: 'Partner API' },
+          { href: '#', label: 'Documentação' },
+          { href: '#', label: 'Status' },
+          { href: '#', label: 'Knowledge Base' },
+        ],
       },
     ],
     copyright: '© 2025 shun.to · Todos os direitos reservados.',
     legal: ['Privacidade', 'Termos de uso', 'Cookies'],
   },
   languages: [
-    { flag: '🇧🇷', label: '🇧🇷 Português' },
-    { flag: '🇺🇸', label: '🇺🇸 English' },
-    { flag: '🇪🇸', label: '🇪🇸 Español' },
+    { flag: '🇧🇷', label: 'Português' },
+    { flag: '🇺🇸', label: 'English' },
+    { flag: '🇪🇸', label: 'Español' },
   ],
 }

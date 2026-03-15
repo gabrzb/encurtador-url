@@ -25,6 +25,7 @@ export function useUrlShortener() {
       shortCode,
       shortUrl: buildShortUrl(shortCode),
     })
+    setShowError(false)
   }
 
   return {

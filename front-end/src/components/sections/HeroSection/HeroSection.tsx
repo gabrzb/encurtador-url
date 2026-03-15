@@ -16,10 +16,11 @@ export function HeroSection({
   onShorten,
   onCopy,
 }: HeroSectionProps) {
+  const titleLines = content.hero.titleStart?.split('\n').filter(Boolean) ?? []
+  const shortUrlHref = result?.shortUrl ?? '#'
+
   return (
     <section className="hero-wrap relative overflow-hidden px-4 sm:px-6">
-      <div aria-hidden="true" />
-      <div aria-hidden="true" />
       <div className="w-full max-w-6xl mx-auto pt-24 pb-16 sm:pt-28 sm:pb-20 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <div className="flex flex-col gap-5 sm:gap-6 items-center text-center lg:items-start lg:text-left">
           <div className="stat-pill w-fit animate-pop-in" style={{ '--reveal-delay': '120ms' } as CSSProperties}>
@@ -27,10 +28,12 @@ export function HeroSection({
             {content.hero.pill}
           </div>
           <h1 className="text-[2.6rem] sm:text-[3.2rem] lg:text-[3.6rem] leading-[1.08] font-extrabold tracking-tight animate-fade-up" style={{ color: 'var(--text-1)', '--reveal-delay': '180ms' } as CSSProperties}>
-            {content.hero.titleStart.split('\n')[0]}
-            <br />
-            {content.hero.titleStart.split('\n')[1]}
-            <br />
+            {titleLines.length > 0 ? titleLines.map((line, index) => (
+              <span key={`${line}-${index}`}>
+                {line}
+                <br />
+              </span>
+            )) : null}
             <GradientText className="inline-block" colors={['#441fff', '#763ef9', '#8f5ee8']} animationSpeed={2}>
               {content.hero.titleGradient}
             </GradientText>
@@ -132,7 +135,7 @@ export function HeroSection({
                   className="flex items-center justify-between gap-3 rounded-2xl border px-4 py-3"
                   style={{ background: 'var(--bg-input)', borderColor: 'var(--border)' }}
                 >
-                  <a id="short-link" href="#" target="_blank" rel="noreferrer" className="text-[0.88rem] font-semibold truncate hover:underline" style={{ color: '#7c6ffa' }}>
+                  <a id="short-link" href={shortUrlHref} target="_blank" rel="noreferrer noopener" className="text-[0.88rem] font-semibold truncate hover:underline" style={{ color: '#7c6ffa' }}>
                     {result?.shortUrl}
                   </a>
                   <Button

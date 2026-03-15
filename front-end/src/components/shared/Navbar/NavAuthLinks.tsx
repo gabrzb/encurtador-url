@@ -8,7 +8,7 @@ export function NavAuthLinks({ content }: NavAuthLinksProps) {
   return (
     <>
       <a
-        href="https://github.com"
+        href={content.githubUrl}
         target="_blank"
         rel="noreferrer"
         className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-[0.78rem] sm:text-[0.82rem] font-semibold transition-all duration-150 active:scale-95 cursor-pointer"

@@ -54,7 +54,8 @@ export default function GradientText({
         progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100)
       }
     } else {
-      progress.set((elapsedRef.current / animationDuration) * 100)
+      const normalizedElapsed = elapsedRef.current % animationDuration
+      progress.set((normalizedElapsed / animationDuration) * 100)
     }
   })
 

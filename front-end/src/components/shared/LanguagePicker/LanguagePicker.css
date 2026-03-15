@@ -1,18 +1,18 @@
-#lang-btn:hover {
+.lang-btn:hover {
   transform: scale(1.08);
 }
 
-#lang-btn:active {
+.lang-btn:active {
   transform: scale(0.95);
 }
 
-#lang-dropdown.closed {
+.lang-dropdown.closed {
   opacity: 0;
   transform: scale(0.92);
   pointer-events: none;
 }
 
-#lang-dropdown.open {
+.lang-dropdown.open {
   opacity: 1;
   transform: scale(1);
   pointer-events: auto;

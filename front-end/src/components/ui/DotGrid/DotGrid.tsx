@@ -69,6 +69,10 @@ const DotGrid: React.FC<DotGridProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const dotsRef = useRef<Dot[]>([])
+  const rafIdRef = useRef<number | null>(null)
+  const animationActiveRef = useRef(false)
+  const isIntersectingRef = useRef(true)
+  const isDocumentVisibleRef = useRef(typeof document === 'undefined' ? true : !document.hidden)
   const pointerRef = useRef({
     x: 0,
     y: 0,
@@ -136,57 +140,116 @@ const DotGrid: React.FC<DotGridProps> = ({
     dotsRef.current = dots
   }, [dotSize, gap])
 
-  useEffect(() => {
-    if (!circlePath) {
+  const stopAnimation = useCallback(() => {
+    animationActiveRef.current = false
+    if (rafIdRef.current !== null) {
+      cancelAnimationFrame(rafIdRef.current)
+      rafIdRef.current = null
+    }
+  }, [])
+
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas || !circlePath) {
+      stopAnimation()
       return
     }
 
-    let rafId: number
-    const proxSq = proximity * proximity
-
-    const draw = () => {
-      const canvas = canvasRef.current
-      if (!canvas) {
-        return
-      }
-      const ctx = canvas.getContext('2d')
-      if (!ctx) {
-        return
-      }
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      const { x: px, y: py } = pointerRef.current
-
-      for (const dot of dotsRef.current) {
-        const ox = dot.cx + dot.xOffset
-        const oy = dot.cy + dot.yOffset
-        const dx = dot.cx - px
-        const dy = dot.cy - py
-        const dsq = dx * dx + dy * dy
-
-        let fillStyle = baseColor
-        if (dsq <= proxSq) {
-          const dist = Math.sqrt(dsq)
-          const t = 1 - dist / proximity
-          const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t)
-          const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t)
-          const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t)
-          fillStyle = `rgb(${r},${g},${b})`
-        }
-
-        ctx.save()
-        ctx.translate(ox, oy)
-        ctx.fillStyle = fillStyle
-        ctx.fill(circlePath)
-        ctx.restore()
-      }
-
-      rafId = requestAnimationFrame(draw)
+    if (!isIntersectingRef.current || !isDocumentVisibleRef.current) {
+      stopAnimation()
+      return
     }
 
-    draw()
-    return () => cancelAnimationFrame(rafId)
-  }, [proximity, baseColor, activeRgb, baseRgb, circlePath])
+    const ctx = canvas.getContext('2d')
+    if (!ctx) {
+      stopAnimation()
+      return
+    }
+
+    const proxSq = proximity * proximity
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    const { x: px, y: py } = pointerRef.current
+
+    for (const dot of dotsRef.current) {
+      const ox = dot.cx + dot.xOffset
+      const oy = dot.cy + dot.yOffset
+      const dx = dot.cx - px
+      const dy = dot.cy - py
+      const dsq = dx * dx + dy * dy
+
+      let fillStyle = baseColor
+      if (dsq <= proxSq) {
+        const dist = Math.sqrt(dsq)
+        const t = 1 - dist / proximity
+        const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t)
+        const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t)
+        const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t)
+        fillStyle = `rgb(${r},${g},${b})`
+      }
+
+      ctx.save()
+      ctx.translate(ox, oy)
+      ctx.fillStyle = fillStyle
+      ctx.fill(circlePath)
+      ctx.restore()
+    }
+
+    rafIdRef.current = requestAnimationFrame(draw)
+  }, [proximity, baseColor, activeRgb, baseRgb, circlePath, stopAnimation])
+
+  const startAnimation = useCallback(() => {
+    if (animationActiveRef.current) {
+      return
+    }
+
+    if (!isIntersectingRef.current || !isDocumentVisibleRef.current) {
+      return
+    }
+
+    animationActiveRef.current = true
+    rafIdRef.current = requestAnimationFrame(draw)
+  }, [draw])
+
+  useEffect(() => {
+    startAnimation()
+    return stopAnimation
+  }, [startAnimation, stopAnimation])
+
+  useEffect(() => {
+    const target = wrapperRef.current
+    if (!target) {
+      return
+    }
+
+    const syncAnimationState = () => {
+      if (isIntersectingRef.current && isDocumentVisibleRef.current) {
+        startAnimation()
+      } else {
+        stopAnimation()
+      }
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersectingRef.current = Boolean(entry?.isIntersecting)
+      syncAnimationState()
+    })
+
+    const onVisibilityChange = () => {
+      isDocumentVisibleRef.current = !document.hidden
+      syncAnimationState()
+    }
+
+    observer.observe(target)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    syncAnimationState()
+
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+    }
+  }, [startAnimation, stopAnimation])
 
   useEffect(() => {
     buildGrid()

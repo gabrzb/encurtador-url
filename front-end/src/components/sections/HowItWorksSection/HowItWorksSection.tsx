@@ -44,6 +44,8 @@ function StepIcon({ index }: { index: number }) {
 }
 
 export function HowItWorksSection({ content, onScrollToInput }: HowItWorksSectionProps) {
+  const titleLines = content.howItWorks.title.split('\n')
+
   return (
     <section id="como-funciona" className="px-4 sm:px-6 py-16 sm:py-28" style={{ background: 'var(--bg)', transition: 'background 0.4s ease' }}>
       <div className="w-full max-w-6xl mx-auto">
@@ -53,9 +55,9 @@ export function HowItWorksSection({ content, onScrollToInput }: HowItWorksSectio
           </span>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 lg:gap-6">
             <h2 className="text-[2rem] sm:text-[2.6rem] font-extrabold tracking-tight leading-tight" style={{ color: 'var(--text-1)' }}>
-              {content.howItWorks.title.split('\n')[0]}
+              {titleLines[0]}
               <br />
-              {content.howItWorks.title.split('\n')[1]}
+              {titleLines[1] ?? ''}
             </h2>
             <p className="text-[0.9rem] sm:text-[0.95rem] leading-relaxed lg:max-w-sm" style={{ color: 'var(--text-2)' }}>
               {content.howItWorks.description}
@@ -68,10 +70,9 @@ export function HowItWorksSection({ content, onScrollToInput }: HowItWorksSectio
           {content.howItWorks.steps.map((step, index) => (
             <Reveal key={step.id} delayMs={120 + index * 110}>
               <div
-                className={`step-col ${index < 2 ? 'step-divider-v' : ''} flex flex-col gap-4 py-6 md:py-0 ${
+                className={`step-col ${index < 2 ? 'md:step-divider-v' : ''} flex flex-col gap-4 py-6 md:py-0 ${
                   index === 0 ? 'md:pr-12' : index === 1 ? 'md:px-12' : 'md:pl-12'
                 }`}
-                style={{ borderRight: index < 2 ? '1px solid var(--border-mid)' : undefined }}
               >
                 <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'var(--bg-btn)' }}>
                   <StepIcon index={index} />

@@ -25,6 +25,7 @@
 }
 
 .theme-icon {
+  color: var(--bg);
   transition: opacity 0.25s ease, transform 0.25s ease;
   grid-area: 1 / 1;
 }

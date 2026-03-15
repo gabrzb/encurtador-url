@@ -8,6 +8,11 @@ export interface NavMenuItem {
   label: string
 }
 
+export interface FooterLink {
+  href: string
+  label: string
+}
+
 export interface StatItem {
   value: string
   label: string
@@ -26,7 +31,7 @@ export interface FaqItem {
 
 export interface FooterColumn {
   title: string
-  links: string[]
+  links: FooterLink[]
 }
 
 export interface ContentData {
@@ -34,6 +39,7 @@ export interface ContentData {
   languageAriaLabel: string
   themeToggleAriaLabel: string
   githubLabel: string
+  githubUrl: string
   loginLabel: string
   menuLabel: string
   closeLabel: string

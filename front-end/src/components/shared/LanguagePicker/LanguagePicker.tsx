@@ -22,8 +22,13 @@ export function LanguagePicker({
   onClose,
 }: LanguagePickerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const dropdownId = 'lang-dropdown'
 
   useEffect(() => {
+    if (!open) {
+      return
+    }
+
     const onDocumentClick = (event: MouseEvent) => {
       if (!open || !wrapperRef.current) {
         return
@@ -42,11 +47,20 @@ export function LanguagePicker({
     <div id="lang-wrapper" ref={wrapperRef} style={{ position: 'fixed', bottom: '20px', right: '72px', zIndex: 100 }}>
       <button
         id="lang-btn"
-        className="floating-control"
+        className="floating-control lang-btn"
+        type="button"
         aria-label={ariaLabel}
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-controls={dropdownId}
         onClick={(event) => {
           event.stopPropagation()
           onToggle()
+        }}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            onClose()
+          }
         }}
         style={{
           width: '44px',
@@ -66,7 +80,9 @@ export function LanguagePicker({
         <span id="lang-flag">{selectedFlag}</span>
       </button>
       <div
-        id="lang-dropdown"
+        id={dropdownId}
+        className={`lang-dropdown ${open ? 'open' : 'closed'}`}
+        role="listbox"
         style={{
           position: 'absolute',
           bottom: 'calc(100% + 10px)',
@@ -80,13 +96,15 @@ export function LanguagePicker({
           transformOrigin: 'bottom right',
           transition: 'opacity 0.2s ease,transform 0.2s cubic-bezier(0.4,0,0.2,1)',
         }}
-        className={open ? 'open' : 'closed'}
       >
         {options.map((option, index) => (
           <button
             key={option.flag}
             className="lang-opt"
             data-flag={option.flag}
+            type="button"
+            role="option"
+            aria-selected={selectedFlag === option.flag}
             style={index > 0 ? { borderTop: '1px solid var(--border-mid)' } : undefined}
             onClick={() => onSelect(option.flag)}
           >

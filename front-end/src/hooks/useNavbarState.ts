@@ -9,6 +9,7 @@ export function useNavbarState() {
       setScrolled(window.scrollY > 60)
     }
 
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])

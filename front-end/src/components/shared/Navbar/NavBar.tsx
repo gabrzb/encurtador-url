@@ -41,8 +41,18 @@ export function NavBar({
       }
     }
 
+    const onDocumentKeydown = (event: KeyboardEvent) => {
+      if (menuOpen && event.key === 'Escape') {
+        onCloseMenu()
+      }
+    }
+
     document.addEventListener('click', onDocumentClick)
-    return () => document.removeEventListener('click', onDocumentClick)
+    document.addEventListener('keydown', onDocumentKeydown)
+    return () => {
+      document.removeEventListener('click', onDocumentClick)
+      document.removeEventListener('keydown', onDocumentKeydown)
+    }
   }, [menuOpen, onCloseMenu])
 
   return (

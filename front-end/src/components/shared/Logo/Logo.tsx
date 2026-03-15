@@ -6,7 +6,9 @@ interface LogoProps {
 }
 
 export function Logo({ brand, textClassName }: LogoProps) {
-  const [left, right] = brand.split('.')
+  const parts = brand.split('.')
+  const left = parts[0]
+  const right = parts[1] ?? ''
 
   return (
     <>
@@ -19,9 +21,11 @@ export function Logo({ brand, textClassName }: LogoProps) {
       </svg>
       <span className={textClassName}>
         {left}
-        <GradientText className="inline-block" colors={['#441fff', '#763ef9', '#8f5ee8']} animationSpeed={2}>
-          .{right}
-        </GradientText>
+        {right ? (
+          <GradientText className="inline-block" colors={['#441fff', '#763ef9', '#8f5ee8']} animationSpeed={2}>
+            .{right}
+          </GradientText>
+        ) : null}
       </span>
     </>
   )

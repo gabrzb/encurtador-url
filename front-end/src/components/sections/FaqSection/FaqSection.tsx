@@ -1,8 +1,11 @@
+import { useRef } from 'react'
 import { Reveal } from '@/components/ui/Reveal/Reveal'
 import type { FaqSectionProps } from '@/types/sections'
 import './FaqSection.css'
 
 export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
+  const answerRefs = useRef<Array<HTMLParagraphElement | null>>([])
+
   return (
     <section id="faq" className="px-4 sm:px-6 py-16 sm:py-28" style={{ background: 'var(--bg)', transition: 'background 0.4s ease' }}>
       <div className="w-full max-w-6xl mx-auto">
@@ -18,6 +21,9 @@ export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
         <div id="faq-list" className="flex flex-col" style={{ borderTop: '1px solid var(--border-mid)' }}>
           {content.faq.items.map((item, index) => {
             const open = openIndex === index
+            const panelId = `faq-panel-${index}`
+            const buttonId = `faq-button-${index}`
+            const panelMaxHeight = open ? `${(answerRefs.current[index]?.scrollHeight ?? 0) + 20}px` : '0px'
             return (
               <Reveal key={item.question} delayMs={80 + index * 70}>
                 <div
@@ -27,6 +33,9 @@ export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
                   <button
                     className="faq-btn w-full flex items-center justify-between gap-4 py-5 text-left cursor-pointer bg-transparent border-none"
                     type="button"
+                    id={buttonId}
+                    aria-expanded={open}
+                    aria-controls={panelId}
                     onClick={() => onToggle(index)}
                   >
                     <span className="text-[0.92rem] sm:text-[1rem] font-semibold pr-2" style={{ color: 'var(--text-1)' }}>
@@ -43,8 +52,20 @@ export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
                       +
                     </span>
                   </button>
-                  <div className="faq-body overflow-hidden" style={{ maxHeight: open ? '180px' : '0px' }}>
-                    <p className="text-[0.87rem] sm:text-[0.9rem] leading-relaxed pb-5" style={{ color: 'var(--text-3)' }}>
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={buttonId}
+                    className="faq-body overflow-hidden"
+                    style={{ maxHeight: panelMaxHeight }}
+                  >
+                    <p
+                      ref={(node) => {
+                        answerRefs.current[index] = node
+                      }}
+                      className="text-[0.87rem] sm:text-[0.9rem] leading-relaxed pb-5"
+                      style={{ color: 'var(--text-3)' }}
+                    >
                       {item.answer}
                     </p>
                   </div>

@@ -13,6 +13,8 @@ export const NavMenuDropdown = forwardRef<HTMLDivElement, NavMenuDropdownProps>(
       <div
         id="dropdown-menu"
         ref={ref}
+        role="menu"
+        aria-hidden={!menuOpen}
         className={`${menuOpen ? 'open' : 'closed'} absolute right-0 w-52 rounded-2xl border shadow-xl overflow-hidden`}
         style={{ top: 'calc(100% + 8px)', borderColor: 'var(--border-mid)', background: 'var(--bg)' }}
       >
@@ -26,6 +28,7 @@ export const NavMenuDropdown = forwardRef<HTMLDivElement, NavMenuDropdownProps>(
           <a
             key={item.href}
             href={item.href}
+            role="menuitem"
             className="menu-item flex items-center justify-between px-5 py-3 text-[0.88rem] font-medium transition-colors"
             style={{
               color: 'var(--text-1)',
@@ -48,6 +51,7 @@ export const NavMenuDropdown = forwardRef<HTMLDivElement, NavMenuDropdownProps>(
           <a
             key={item.href}
             href={item.href}
+            role="menuitem"
             className="menu-item flex items-center justify-between px-5 py-3 text-[0.88rem] font-medium transition-colors"
             style={{
               color: 'var(--text-1)',
