@@ -21,6 +21,6 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@react-bits": "https://reactbits.dev/r/{name}.json?v=2026-03-14"
   }
 }

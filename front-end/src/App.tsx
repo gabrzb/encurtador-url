@@ -72,7 +72,7 @@ function App() {
         }}
       />
 
-      <ThemeToggle ariaLabel={content.themeToggleAriaLabel} onClick={toggleTheme} />
+      <ThemeToggle ariaLabel={content.themeToggleAriaLabel} onClick={toggleTheme} pressed={dark} />
 
       <NavBar
         content={content}

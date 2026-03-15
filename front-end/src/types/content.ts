@@ -63,6 +63,7 @@ export interface ContentData {
     resultTitle: string
     validityTextStart: string
     validityLink: string
+    validityLinkHref: string
     copyDefault: string
     copySuccess: string
   }

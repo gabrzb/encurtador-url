@@ -4,15 +4,29 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
 gsap.registerPlugin(InertiaPlugin)
 
-const throttle = <Args extends unknown[]>(func: (...args: Args) => void, limit: number) => {
+type ThrottledFunction<Args extends unknown[]> = ((...args: Args) => void) & { cancel: () => void }
+
+const throttle = <Args extends unknown[]>(func: (...args: Args) => void, limit: number): ThrottledFunction<Args> => {
   let lastCall = 0
-  return (...args: Args) => {
+  let canceled = false
+
+  const throttled = (...args: Args) => {
+    if (canceled) {
+      return
+    }
+
     const now = performance.now()
     if (now - lastCall >= limit) {
       lastCall = now
       func(...args)
     }
   }
+
+  throttled.cancel = () => {
+    canceled = true
+  }
+
+  return throttled
 }
 
 interface Dot {
@@ -69,6 +83,8 @@ const DotGrid: React.FC<DotGridProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const dotsRef = useRef<Dot[]>([])
+  const cssWidthRef = useRef(0)
+  const cssHeightRef = useRef(0)
   const rafIdRef = useRef<number | null>(null)
   const animationActiveRef = useRef(false)
   const isIntersectingRef = useRef(true)
@@ -106,6 +122,8 @@ const DotGrid: React.FC<DotGridProps> = ({
 
     const { width, height } = wrap.getBoundingClientRect()
     const dpr = window.devicePixelRatio || 1
+    cssWidthRef.current = width
+    cssHeightRef.current = height
 
     canvas.width = width * dpr
     canvas.height = height * dpr
@@ -168,7 +186,7 @@ const DotGrid: React.FC<DotGridProps> = ({
 
     const proxSq = proximity * proximity
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, cssWidthRef.current, cssHeightRef.current)
 
     const { x: px, y: py } = pointerRef.current
 
@@ -362,8 +380,15 @@ const DotGrid: React.FC<DotGridProps> = ({
     window.addEventListener('click', onClick)
 
     return () => {
+      throttledMove.cancel()
       window.removeEventListener('mousemove', throttledMove)
       window.removeEventListener('click', onClick)
+      gsap.killTweensOf(dotsRef.current)
+      for (const dot of dotsRef.current) {
+        dot._inertiaApplied = false
+        dot.xOffset = 0
+        dot.yOffset = 0
+      }
     }
   }, [maxSpeed, speedTrigger, proximity, resistance, returnDuration, shockRadius, shockStrength])
 

@@ -40,6 +40,7 @@ export const content: ContentData = {
     resultTitle: 'Seu link encurtado',
     validityTextStart: 'Link válido por 30 dias ·',
     validityLink: 'criar conta para manter',
+    validityLinkHref: '/signup',
     copyDefault: 'Copiar',
     copySuccess: 'Copiado ✓',
   },

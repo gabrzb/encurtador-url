@@ -1,4 +1,4 @@
-#theme-toggle {
+.theme-toggle {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -16,11 +16,11 @@
   transition: background 0.35s ease, transform 0.2s ease, box-shadow 0.35s ease;
 }
 
-#theme-toggle:hover {
+.theme-toggle:hover {
   transform: scale(1.08);
 }
 
-#theme-toggle:active {
+.theme-toggle:active {
   transform: scale(0.95);
 }
 
@@ -30,22 +30,22 @@
   grid-area: 1 / 1;
 }
 
-#icon-sun {
+.theme-icon-sun {
   opacity: 0;
   transform: scale(0.5) rotate(90deg);
 }
 
-#icon-moon {
+.theme-icon-moon {
   opacity: 1;
   transform: scale(1) rotate(0deg);
 }
 
-[data-theme="dark"] #icon-sun {
+[data-theme="dark"] .theme-icon-sun {
   opacity: 1;
   transform: scale(1) rotate(0deg);
 }
 
-[data-theme="dark"] #icon-moon {
+[data-theme="dark"] .theme-icon-moon {
   opacity: 0;
   transform: scale(0.5) rotate(-90deg);
 }

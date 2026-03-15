@@ -77,7 +77,7 @@ export function HeroSection({
               </p>
             </div>
             <div className="flex flex-col gap-2 mt-5">
-              <label className="text-[0.75rem] font-semibold tracking-wide uppercase" style={{ color: 'var(--text-3)' }}>
+              <label htmlFor="url-input" className="text-[0.75rem] font-semibold tracking-wide uppercase" style={{ color: 'var(--text-3)' }}>
                 {content.form.urlLabel}
               </label>
               <div
@@ -153,7 +153,7 @@ export function HeroSection({
                 </div>
                 <p className="text-[0.74rem]" style={{ color: 'var(--text-4)' }}>
                   {content.form.validityTextStart}{' '}
-                  <a href="#" className="underline hover:text-[#7c6ffa]" style={{ color: 'var(--text-4)' }}>
+                  <a href={content.form.validityLinkHref} className="underline hover:text-[#7c6ffa]" style={{ color: 'var(--text-4)' }}>
                     {content.form.validityLink}
                   </a>
                 </p>

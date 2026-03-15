@@ -54,15 +54,15 @@ export default function GradientText({
         progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100)
       }
     } else {
-      const normalizedElapsed = elapsedRef.current % animationDuration
-      progress.set((normalizedElapsed / animationDuration) * 100)
+      // Continuously increase position for seamless looping.
+      progress.set((elapsedRef.current / animationDuration) * 100)
     }
   })
 
   useEffect(() => {
     elapsedRef.current = 0
     progress.set(0)
-  }, [animationSpeed, yoyo, progress])
+  }, [animationSpeed, yoyo])
 
   const backgroundPosition = useTransform(progress, (p) => {
     if (direction === 'horizontal') {
@@ -73,7 +73,7 @@ export default function GradientText({
       return `50% ${p}%`
     }
 
-    return `${p}% 50%`
+    return `${p}% ${p}%`
   })
 
   const handleMouseEnter = useCallback(() => {
