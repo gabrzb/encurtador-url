@@ -5,7 +5,7 @@ export const content: ContentData = {
   languageAriaLabel: 'Idioma',
   themeToggleAriaLabel: 'Alternar tema',
   githubLabel: 'GitHub',
-  githubUrl: 'https://github.com/gabri/encurtador-url',
+  githubUrl: 'https://github.com/gabrzb/encurtador-url',
   loginLabel: 'Entrar',
   menuLabel: 'Menu',
   closeLabel: 'Fechar',
