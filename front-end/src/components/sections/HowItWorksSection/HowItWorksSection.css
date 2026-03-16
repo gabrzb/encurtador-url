@@ -4,6 +4,34 @@
   }
 }
 
+.cta-sweep {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.cta-sweep::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  background: #ffffff;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: transform 0.5s ease;
+}
+
+.cta-sweep:hover {
+  color: #111111;
+  transform: none !important;
+}
+
+.cta-sweep:hover::after {
+  transform: skewX(-45deg) scale(1, 1);
+}
+
 @media (max-width: 767px) {
   .md\:step-divider-v {
     border-right: none;

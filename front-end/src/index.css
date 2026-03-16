@@ -104,6 +104,12 @@ a {
   text-decoration: none;
 }
 
+.no-hover-lift:hover,
+.no-hover-lift:focus-visible {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 @theme inline {
   --font-sans: "Geist Variable", sans-serif;
   --color-ring: var(--ring);

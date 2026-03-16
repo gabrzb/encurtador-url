@@ -1,3 +1,12 @@
 .faq-body {
   transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.faq-btn {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.faq-btn:hover {
+  transform: translateX(4px);
+  background: rgba(128, 128, 128, 0.06);
+}
