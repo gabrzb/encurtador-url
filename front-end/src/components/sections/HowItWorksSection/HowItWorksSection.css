@@ -1,0 +1,16 @@
+@media (min-width: 768px) {
+  .md\:step-divider-v {
+    border-right: 1px solid var(--border-mid);
+  }
+}
+
+@media (max-width: 767px) {
+  .md\:step-divider-v {
+    border-right: none;
+    border-bottom: 1px solid var(--border-mid);
+  }
+
+  .step-col {
+    padding: 1.5rem 0;
+  }
+}

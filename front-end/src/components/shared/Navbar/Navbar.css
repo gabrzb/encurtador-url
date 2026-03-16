@@ -1,0 +1,83 @@
+#navbar-wrapper {
+  transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#navbar-inner {
+  background: var(--bg);
+  border-color: var(--border);
+  transition: background 0.4s ease, backdrop-filter 0.55s ease, -webkit-backdrop-filter 0.55s ease, box-shadow 0.55s ease,
+    border-color 0.4s ease;
+}
+
+#dropdown-menu {
+  transform-origin: top right;
+  background: var(--bg);
+  border-color: var(--border-mid);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease, border-color 0.4s ease;
+}
+
+#dropdown-menu.closed {
+  opacity: 0;
+  transform: scale(0.95) translateY(-6px);
+  pointer-events: none;
+}
+
+#dropdown-menu.open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+#menu-btn {
+  background: var(--bg-btn);
+  color: var(--text-1);
+  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s, width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.icon-slot {
+  display: grid;
+  place-items: center;
+}
+
+.icon-slot > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#icon-dots {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#icon-close {
+  opacity: 0;
+  transform: scale(0.5) rotate(-45deg);
+}
+
+#menu-btn[data-state="open"] #icon-dots,
+#menu-btn.is-open #icon-dots {
+  opacity: 0;
+  transform: scale(0.5) rotate(45deg);
+}
+
+#menu-btn[data-state="open"] #icon-close,
+#menu-btn.is-open #icon-close {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.menu-item .arrow {
+  transition: transform 0.2s ease;
+  color: var(--text-4);
+}
+
+.menu-item:hover .arrow {
+  transform: translateX(4px);
+}
+
+.menu-item:hover {
+  background: rgba(128, 128, 128, 0.08);
+}
