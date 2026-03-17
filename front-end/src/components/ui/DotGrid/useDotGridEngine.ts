@@ -21,7 +21,7 @@ export function useDotGridEngine({ dotSize, gap, baseColor, activeColor, proximi
   const isIntersectingRef = useRef(true)
   const isDocumentVisibleRef = useRef(typeof document === 'undefined' ? true : !document.hidden)
   const pointerRef = useRef<PointerState>({
-    // Por que: iniciar fora da tela evita destaque incorreto no primeiro frame.
+    // Start off-canvas to avoid accidental highlight on first paint.
     x: -9999,
     y: -9999,
     vx: 0,
@@ -61,6 +61,7 @@ export function useDotGridEngine({ dotSize, gap, baseColor, activeColor, proximi
       return
     }
 
+    // Pause the loop while offscreen or on hidden tab to avoid needless GPU work.
     if (!isIntersectingRef.current || !isDocumentVisibleRef.current) {
       stopAnimation()
       return
@@ -164,6 +165,7 @@ export function useDotGridEngine({ dotSize, gap, baseColor, activeColor, proximi
       }
     }
 
+    // Visibility observers decide whether RAF should run at all.
     const observer = new IntersectionObserver(([entry]) => {
       isIntersectingRef.current = Boolean(entry?.isIntersecting)
       syncAnimationState()

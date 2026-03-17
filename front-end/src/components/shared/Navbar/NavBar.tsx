@@ -41,6 +41,7 @@ export function NavBar({
       }
     }
 
+    // Keep menu dismiss behavior consistent for keyboard and pointer users.
     const onDocumentKeydown = (event: KeyboardEvent) => {
       if (menuOpen && event.key === 'Escape') {
         onCloseMenu()
@@ -93,6 +94,7 @@ export function NavBar({
               labelOpen={content.closeLabel}
               labelClosed={content.menuLabel}
               onClick={(event) => {
+                // Prevent document click handler from immediately closing the menu.
                 event.stopPropagation()
                 onToggleMenu()
               }}

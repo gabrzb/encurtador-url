@@ -50,7 +50,7 @@ export function useDotGridInteractions({
       const isPointerSeeded = pointer.lastX !== -9999 && pointer.lastY !== -9999
 
       if (!pointer.lastTime || !isPointerSeeded) {
-        // Por que: o primeiro evento só sincroniza histórico para evitar pico falso de velocidade.
+        // First move only seeds pointer history to avoid a fake velocity spike.
         pointer.lastTime = now
         pointer.lastX = event.clientX
         pointer.lastY = event.clientY
@@ -93,6 +93,7 @@ export function useDotGridInteractions({
       for (const dot of dotsRef.current) {
         const dist = Math.hypot(dot.cx - pointer.x, dot.cy - pointer.y)
 
+        // Ignore low-speed or distant points to keep interaction responsive on dense grids.
         if (speed <= speedTrigger || dist >= proximity || dot._inertiaApplied) {
           continue
         }
@@ -134,6 +135,7 @@ export function useDotGridInteractions({
         gsap.killTweensOf(dot)
 
         const falloff = Math.max(0, 1 - dist / shockRadius)
+        // Falloff avoids unnatural jumps by weakening the impulse near the radius edge.
         const pushX = (dot.cx - cx) * shockStrength * falloff
         const pushY = (dot.cy - cy) * shockStrength * falloff
 
