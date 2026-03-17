@@ -42,7 +42,19 @@ export function useDotGridInteractions({
       const now = performance.now()
       const pointer = pointerRef.current
 
-      const dt = pointer.lastTime ? now - pointer.lastTime : 16
+      const isPointerSeeded = pointer.lastX !== -9999 && pointer.lastY !== -9999
+
+      if (!pointer.lastTime || !isPointerSeeded) {
+        // Por que: o primeiro evento só sincroniza histórico para evitar pico falso de velocidade.
+        pointer.lastTime = now
+        pointer.lastX = event.clientX
+        pointer.lastY = event.clientY
+        pointer.vx = 0
+        pointer.vy = 0
+        pointer.speed = 0
+      }
+
+      const dt = Math.max(now - pointer.lastTime, 1)
       const dx = event.clientX - pointer.lastX
       const dy = event.clientY - pointer.lastY
 

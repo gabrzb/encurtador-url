@@ -104,10 +104,13 @@ a {
   text-decoration: none;
 }
 
-.no-hover-lift:hover,
-.no-hover-lift:focus-visible {
+.no-hover-lift:hover {
   transform: none !important;
   box-shadow: none !important;
+}
+
+.no-hover-lift:focus-visible {
+  transform: none !important;
 }
 
 @theme inline {

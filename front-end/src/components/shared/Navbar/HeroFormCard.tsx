@@ -15,6 +15,25 @@ interface HeroFormCardProps {
   onCopy: () => void
 }
 
+function sanitizeHttpUrl(urlValue: string | null | undefined): string {
+  if (typeof urlValue !== 'string') {
+    return '#'
+  }
+
+  const normalized = urlValue.trim()
+  if (!normalized) {
+    return '#'
+  }
+
+  try {
+    // Por que: aceitar apenas http/https evita injeção de esquemas perigosos no href.
+    const parsedUrl = new URL(normalized)
+    return /^https?:$/i.test(parsedUrl.protocol) ? parsedUrl.toString() : '#'
+  } catch {
+    return '#'
+  }
+}
+
 export function HeroFormCard({
   formContent,
   inputValue,
@@ -25,7 +44,9 @@ export function HeroFormCard({
   onShorten,
   onCopy,
 }: HeroFormCardProps) {
-  const shortUrlHref = result?.shortUrl ?? '#'
+  const shortUrlHref = sanitizeHttpUrl(result?.shortUrl)
+  // Por que: se o link for inválido, não exibimos o payload não confiável na UI.
+  const displayShortUrl = shortUrlHref === '#' ? '' : shortUrlHref
   const submitLabel = formContent.submit.replace(/\s*→\s*$/, '')
 
   return (
@@ -92,7 +113,7 @@ export function HeroFormCard({
           id="shorten-btn"
           type="button"
           onClick={onShorten}
-          className="hero-galaxy-btn no-hover-lift !hover:translate-y-0 !hover:shadow-none w-full py-3 rounded-2xl h-auto mt-5"
+          className="hero-galaxy-btn no-hover-lift hover:translate-y-0! hover:shadow-none! w-full py-3 rounded-2xl h-auto mt-5"
         >
           <span className="hero-galaxy-btn__content">
             <span className="hero-galaxy-btn__text">{submitLabel}</span>
@@ -119,7 +140,7 @@ export function HeroFormCard({
                 className="text-[0.88rem] font-semibold truncate hover:underline"
                 style={{ color: '#7c6ffa' }}
               >
-                {result?.shortUrl}
+                {displayShortUrl}
               </a>
               <Button
                 id="copy-btn"

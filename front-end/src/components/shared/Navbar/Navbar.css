@@ -42,10 +42,9 @@
   white-space: nowrap;
 }
 
-#menu-btn:hover,
+#menu-btn:hover:not(:active),
 #menu-btn:focus-visible {
   outline: 0;
-  transform: none !important;
   background-position: 100% 50%;
   box-shadow: rgba(118, 62, 249, 0.34) 0 18px 34px -10px;
 }

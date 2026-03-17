@@ -16,7 +16,7 @@ export const NavMenuButton = forwardRef<HTMLButtonElement, NavMenuButtonProps>(
         id="menu-btn"
         type="button"
         data-state={menuOpen ? 'open' : 'closed'}
-        className="no-hover-lift !hover:translate-y-0 !hover:shadow-none rounded-full cursor-pointer h-auto"
+        className="no-hover-lift hover:translate-y-0! hover:shadow-none! rounded-full cursor-pointer h-auto"
         onClick={onClick}
       >
         <span className="menu-btn-inner text-[0.78rem] sm:text-[0.82rem] font-semibold">

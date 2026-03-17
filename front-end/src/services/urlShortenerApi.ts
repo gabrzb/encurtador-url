@@ -11,7 +11,7 @@ export interface CreateShortUrlResponse {
 }
 
 export const urlShortenerApi = {
-  // Placeholder: ajustar endpoint quando backend estiver pronto.
+  // Por que: endpoint provisório até o backend final estar disponível.
   async createShortUrl(payload: CreateShortUrlPayload): Promise<CreateShortUrlResponse> {
     return apiRequest<CreateShortUrlResponse>('/api/short-urls', {
       method: 'POST',

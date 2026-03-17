@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { content } from '@/data/content'
 import { useTheme } from '@/hooks/useTheme'
 import { useNavbarState } from '@/hooks/useNavbarState'
@@ -8,6 +8,8 @@ import { useClipboard } from '@/hooks/useClipboard'
 import { useFaq } from '@/hooks/useFaq'
 
 export function useAppPageState() {
+  // Por que: manter um único timer evita foco atrasado e callbacks stale.
+  const focusTimerRef = useRef<number | null>(null)
   const { dark, toggleTheme } = useTheme()
   const { scrolled, menuOpen, toggleMenu, closeMenu } = useNavbarState()
   const language = useLanguagePicker(content.languages[0].flag)
@@ -19,6 +21,14 @@ export function useAppPageState() {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
   }, [dark])
 
+  useEffect(() => {
+    return () => {
+      if (focusTimerRef.current !== null) {
+        window.clearTimeout(focusTimerRef.current)
+      }
+    }
+  }, [])
+
   const handleCopy = () => {
     if (!result?.shortUrl) {
       return
@@ -29,7 +39,14 @@ export function useAppPageState() {
   const scrollToInput = () => {
     const inputElement = document.getElementById('url-input')
     inputElement?.scrollIntoView({ behavior: 'smooth' })
-    setTimeout(() => inputElement?.focus(), 600)
+
+    if (focusTimerRef.current !== null) {
+      window.clearTimeout(focusTimerRef.current)
+    }
+
+    focusTimerRef.current = window.setTimeout(() => {
+      inputElement?.focus()
+    }, 600)
   }
 
   return {

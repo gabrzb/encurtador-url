@@ -22,6 +22,17 @@ describe('heroStatUtils', () => {
     })
   })
 
+  it('parseia numeros negativos preservando prefixo e sufixo', () => {
+    const parsed = parseHeroStatValue('~-0.3s')
+
+    expect(parsed.kind).toBe('numeric')
+    if (parsed.kind === 'numeric') {
+      expect(parsed.prefix).toBe('~')
+      expect(parsed.value).toBe(-0.3)
+      expect(parsed.suffix).toBe('s')
+    }
+  })
+
   it('calcula valor inicial para animacao decrescente', () => {
     expect(getDownStartValue(0.5)).toBeCloseTo(1.4)
   })

@@ -14,6 +14,8 @@ interface CountUpProps {
   onEnd?: () => void
 }
 
+const MIN_DURATION = 0.05
+
 function getDecimalPlaces(value: number): number {
   const valueAsText = value.toString()
 
@@ -38,10 +40,13 @@ function CountUp({
   onEnd,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
+  // Por que: o modo 'up' anima de from -> to; o modo 'down' inverte para to -> from.
   const motionValue = useMotionValue(direction === 'down' ? to : from)
+  // Por que: evita divisão por zero/valor negativo nos parâmetros do spring.
+  const sanitizedDuration = Math.max(duration, MIN_DURATION)
 
-  const damping = 20 + 40 * (1 / duration)
-  const stiffness = 100 * (1 / duration)
+  const damping = 20 + 40 * (1 / sanitizedDuration)
+  const stiffness = 100 * (1 / sanitizedDuration)
 
   const springValue = useSpring(motionValue, {
     damping,
@@ -71,7 +76,7 @@ function CountUp({
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.textContent = formatValue(direction === 'down' ? to : from)
+      ref.current.textContent = formatValue(direction === 'down' ? from : to)
     }
   }, [from, to, direction, formatValue])
 
@@ -82,6 +87,7 @@ function CountUp({
       }
 
       const timeoutId = setTimeout(() => {
+        // Por que: o alvo é o estado oposto ao valor inicial renderizado.
         motionValue.set(direction === 'down' ? from : to)
       }, delay * 1000)
 
@@ -91,7 +97,7 @@ function CountUp({
             onEnd()
           }
         },
-        delay * 1000 + duration * 1000,
+        delay * 1000 + sanitizedDuration * 1000,
       )
 
       return () => {
@@ -99,7 +105,7 @@ function CountUp({
         clearTimeout(durationTimeoutId)
       }
     }
-  }, [isInView, startWhen, motionValue, direction, from, to, delay, onStart, onEnd, duration])
+  }, [isInView, startWhen, motionValue, direction, from, to, delay, onStart, onEnd, sanitizedDuration])
 
   useEffect(() => {
     const unsubscribe = springValue.on('change', (latest: number) => {

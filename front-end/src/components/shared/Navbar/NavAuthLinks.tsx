@@ -9,6 +9,7 @@ export function NavAuthLinks({ content }: NavAuthLinksProps) {
     <>
       <a
         href="/login"
+        aria-label={content.loginLabel}
         className="nav-pill nav-pill-outline nav-sweep nav-sweep-invert flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-[0.78rem] sm:text-[0.82rem] font-semibold cursor-pointer border"
         style={{ color: '#111111', borderColor: '#d6d6d6', background: '#ffffff' }}
       >
@@ -29,6 +30,7 @@ export function NavAuthLinks({ content }: NavAuthLinksProps) {
           />
           <line x1="15" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
+        <span className="sr-only">{content.loginLabel}</span>
         <span className="hidden sm:inline">{content.loginLabel}</span>
       </a>
     </>

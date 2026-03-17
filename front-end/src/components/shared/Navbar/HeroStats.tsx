@@ -21,7 +21,7 @@ export function HeroStats({ stats }: HeroStatsProps) {
           stat.parsedValue.kind === 'numeric' && stat.parsedValue.value < 1 && stat.parsedValue.suffix.trim().toLowerCase() === 's'
 
         return (
-          <div key={stat.label} className="flex items-center gap-5 sm:gap-6">
+          <div key={`${stat.label}-${stat.index}`} className="flex items-center gap-5 sm:gap-6">
             <div>
               <p className="text-[1.6rem] sm:text-[1.9rem] font-extrabold leading-none" style={{ color: 'var(--text-1)' }}>
                 {stat.parsedValue.kind === 'numeric' ? (

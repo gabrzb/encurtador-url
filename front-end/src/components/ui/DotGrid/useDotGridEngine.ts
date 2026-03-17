@@ -21,14 +21,15 @@ export function useDotGridEngine({ dotSize, gap, baseColor, activeColor, proximi
   const isIntersectingRef = useRef(true)
   const isDocumentVisibleRef = useRef(typeof document === 'undefined' ? true : !document.hidden)
   const pointerRef = useRef<PointerState>({
-    x: 0,
-    y: 0,
+    // Por que: iniciar fora da tela evita destaque incorreto no primeiro frame.
+    x: -9999,
+    y: -9999,
     vx: 0,
     vy: 0,
     speed: 0,
-    lastTime: 0,
-    lastX: 0,
-    lastY: 0,
+    lastTime: typeof performance !== 'undefined' ? performance.now() : Date.now(),
+    lastX: -9999,
+    lastY: -9999,
   })
 
   const baseRgb = useMemo(() => hexToRgb(baseColor), [baseColor])

@@ -54,7 +54,7 @@ export default function GradientText({
         progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100)
       }
     } else {
-      // Continuously increase position for seamless looping.
+      // Por que: avanço contínuo mantém o gradiente fluindo sem saltos visuais.
       progress.set((elapsedRef.current / animationDuration) * 100)
     }
   })
