@@ -29,12 +29,12 @@ export const NavMenuButton = forwardRef<HTMLButtonElement, NavMenuButtonProps>(
             </span>
           </span>
           <span className="icon-slot w-[10px]" aria-hidden="true">
-            <span id="icon-dots" className="flex flex-col gap-[3px]" aria-hidden="true">
+            <span className="icon-dots flex flex-col gap-[3px]" aria-hidden="true">
               <span className="block w-[3px] h-[3px] bg-current rounded-full" />
               <span className="block w-[3px] h-[3px] bg-current rounded-full" />
               <span className="block w-[3px] h-[3px] bg-current rounded-full" />
             </span>
-            <span id="icon-close" className="text-[0.9rem] leading-none font-light select-none" aria-hidden="true">
+            <span className="icon-close text-[0.9rem] leading-none font-light select-none" aria-hidden="true">
               ✕
             </span>
           </span>

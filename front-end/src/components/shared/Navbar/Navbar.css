@@ -171,24 +171,24 @@
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-#icon-dots {
+.icon-dots {
   opacity: 1;
   transform: scale(1);
 }
 
-#icon-close {
+.icon-close {
   opacity: 0;
   transform: scale(0.5) rotate(-45deg);
 }
 
-#menu-btn[data-state="open"] #icon-dots,
-#menu-btn.is-open #icon-dots {
+#menu-btn[data-state="open"] .icon-dots,
+#menu-btn.is-open .icon-dots {
   opacity: 0;
   transform: scale(0.5) rotate(45deg);
 }
 
-#menu-btn[data-state="open"] #icon-close,
-#menu-btn.is-open #icon-close {
+#menu-btn[data-state="open"] .icon-close,
+#menu-btn.is-open .icon-close {
   opacity: 1;
   transform: scale(1) rotate(0deg);
 }

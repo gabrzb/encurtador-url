@@ -1,7 +1,12 @@
 import { useEffect, type RefObject } from 'react'
 import { gsap } from 'gsap'
+import { InertiaPlugin } from 'gsap/InertiaPlugin'
 import type { Dot, PointerState } from './dotGrid.types'
 import { throttle } from './dotGrid.utils'
+
+gsap.registerPlugin(InertiaPlugin)
+
+const POINTER_VELOCITY_FACTOR = 0.005
 
 interface UseDotGridInteractionsOptions {
   canvasRef: RefObject<HTMLCanvasElement | null>
@@ -95,8 +100,8 @@ export function useDotGridInteractions({
         dot._inertiaApplied = true
         gsap.killTweensOf(dot)
 
-        const pushX = dot.cx - pointer.x + vx * 0.005
-        const pushY = dot.cy - pointer.y + vy * 0.005
+        const pushX = dot.cx - pointer.x + vx * POINTER_VELOCITY_FACTOR
+        const pushY = dot.cy - pointer.y + vy * POINTER_VELOCITY_FACTOR
 
         gsap.to(dot, {
           inertia: { xOffset: pushX, yOffset: pushY, resistance },

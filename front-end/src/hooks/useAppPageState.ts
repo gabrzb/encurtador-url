@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { content } from '@/data/content'
 import { useTheme } from '@/hooks/useTheme'
 import { useNavbarState } from '@/hooks/useNavbarState'
@@ -29,14 +29,16 @@ export function useAppPageState() {
     }
   }, [])
 
-  const handleCopy = () => {
-    if (!result?.shortUrl) {
+  const handleCopy = useCallback(() => {
+    const shortUrl = result?.shortUrl
+
+    if (!shortUrl) {
       return
     }
-    void copy(result.shortUrl)
-  }
+    void copy(shortUrl)
+  }, [copy, result])
 
-  const scrollToInput = () => {
+  const scrollToInput = useCallback(() => {
     const inputElement = document.getElementById('url-input')
     inputElement?.scrollIntoView({ behavior: 'smooth' })
 
@@ -47,7 +49,7 @@ export function useAppPageState() {
     focusTimerRef.current = window.setTimeout(() => {
       inputElement?.focus()
     }, 600)
-  }
+  }, [])
 
   return {
     dark,
