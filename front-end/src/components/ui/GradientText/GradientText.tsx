@@ -54,7 +54,7 @@ export default function GradientText({
         progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100)
       }
     } else {
-      // Por que: avanço contínuo mantém o gradiente fluindo sem saltos visuais.
+      // Keep progress continuous so the gradient loops without visible jumps.
       progress.set((elapsedRef.current / animationDuration) * 100)
     }
   })

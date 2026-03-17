@@ -8,7 +8,7 @@ import { useClipboard } from '@/hooks/useClipboard'
 import { useFaq } from '@/hooks/useFaq'
 
 export function useAppPageState() {
-  // Por que: manter um único timer evita foco atrasado e callbacks stale.
+  // Keep a single pending timer to avoid delayed focus and stale callbacks.
   const focusTimerRef = useRef<number | null>(null)
   const { dark, toggleTheme } = useTheme()
   const { scrolled, menuOpen, toggleMenu, closeMenu } = useNavbarState()

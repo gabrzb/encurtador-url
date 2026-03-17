@@ -27,7 +27,7 @@ function sanitizeHttpUrl(urlValue: string | null | undefined): string {
   }
 
   try {
-    // Por que: aceitar apenas http/https evita injeção de esquemas perigosos no href.
+    // Only allow http/https to prevent unsafe URI schemes in href.
     const parsedUrl = new URL(normalized)
     return /^https?:$/i.test(parsedUrl.protocol) ? parsedUrl.toString() : '#'
   } catch {
@@ -46,7 +46,7 @@ export function HeroFormCard({
   onCopy,
 }: HeroFormCardProps) {
   const shortUrlHref = sanitizeHttpUrl(result?.shortUrl)
-  // Por que: se o link for inválido, não exibimos o payload não confiável na UI.
+  // Hide untrusted payload text whenever the URL is rejected.
   const displayShortUrl = shortUrlHref === '#' ? '' : shortUrlHref
   const submitLabel = formContent.submit.replace(/\s*→\s*$/, '')
 
@@ -75,6 +75,7 @@ export function HeroFormCard({
           </p>
         </div>
 
+        {/* noValidate keeps validation feedback controlled by the current UI state. */}
         <form onSubmit={handleSubmit} noValidate>
           <div className="flex flex-col gap-2 mt-5">
             <label htmlFor="url-input" className="text-[0.75rem] font-semibold tracking-wide uppercase" style={{ color: 'var(--text-3)' }}>
@@ -119,6 +120,7 @@ export function HeroFormCard({
               />
             </div>
             {showError ? (
+              // Linked by aria-describedby so screen readers announce the validation reason.
               <p id="url-error" className="text-[0.74rem]" style={{ color: '#f87171' }}>
                 Digite uma URL valida para continuar.
               </p>

@@ -40,9 +40,9 @@ function CountUp({
   onEnd,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  // Por que: o modo 'up' anima de from -> to; o modo 'down' inverte para to -> from.
+  // 'up' animates from -> to, while 'down' uses the inverse path.
   const motionValue = useMotionValue(direction === 'down' ? to : from)
-  // Por que: evita divisão por zero/valor negativo nos parâmetros do spring.
+  // Clamp duration to keep spring math stable.
   const sanitizedDuration = Math.max(duration, MIN_DURATION)
 
   const damping = 20 + 40 * (1 / sanitizedDuration)
@@ -59,6 +59,7 @@ function CountUp({
 
   const formatValue = useCallback(
     (latest: number) => {
+      // Preserve precision across the whole animation so values do not "jump" formats.
       const hasDecimals = maxDecimals > 0
 
       const options: Intl.NumberFormatOptions = {
@@ -87,7 +88,7 @@ function CountUp({
       }
 
       const timeoutId = setTimeout(() => {
-        // Por que: o alvo é o estado oposto ao valor inicial renderizado.
+        // Animate toward the opposite endpoint of the initial rendered value.
         motionValue.set(direction === 'down' ? from : to)
       }, delay * 1000)
 
@@ -97,6 +98,7 @@ function CountUp({
             onEnd()
           }
         },
+        // Keep onEnd aligned with the same sanitized duration used by spring timing.
         delay * 1000 + sanitizedDuration * 1000,
       )
 
