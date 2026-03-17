@@ -102,7 +102,7 @@ export function HowItWorksSection({ content, onScrollToInput }: HowItWorksSectio
           <Button
             type="button"
             onClick={onScrollToInput}
-            className="shrink-0 w-full sm:w-auto px-6 sm:px-7 py-3 rounded-full text-[0.88rem] font-semibold cursor-pointer transition-all duration-150 active:scale-95 text-white text-center h-auto cta-glow"
+            className="no-hover-lift hover:translate-y-0! hover:shadow-none! shrink-0 w-full sm:w-auto px-6 sm:px-7 py-3 rounded-full text-[0.88rem] font-semibold cursor-pointer transition-all duration-150 active:scale-95 text-white text-center h-auto cta-sweep"
             style={{ background: 'linear-gradient(90deg,#7c6ffa,#3b82f6)' }}
           >
             {content.howItWorks.calloutButton}
