@@ -1,21 +1,24 @@
-import { useRef } from 'react'
 import { Reveal } from '@/components/ui/Reveal/Reveal'
 import type { FaqSectionProps } from '@/types/sections'
 import './FaqSection.css'
 
 export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
-  const answerRefs = useRef<Array<HTMLParagraphElement | null>>([])
+  const itemVariants: Array<'left' | 'right'> = ['left', 'right']
 
   return (
     <section id="faq" className="px-4 sm:px-6 py-16 sm:py-28" style={{ background: 'var(--bg)', transition: 'background 0.4s ease' }}>
       <div className="w-full max-w-6xl mx-auto">
         <div className="flex flex-col gap-3 mb-10 sm:mb-14">
-          <span className="text-[0.78rem] font-semibold tracking-widest uppercase" style={{ color: '#7c6ffa' }}>
-            {content.faq.badge}
-          </span>
-          <h2 className="text-[2rem] sm:text-[2.6rem] font-extrabold tracking-tight leading-tight" style={{ color: 'var(--text-1)' }}>
-            {content.faq.title}
-          </h2>
+          <Reveal delayMs={40} variant="left">
+            <span className="text-[0.78rem] font-semibold tracking-widest uppercase" style={{ color: '#7c6ffa' }}>
+              {content.faq.badge}
+            </span>
+          </Reveal>
+          <Reveal delayMs={90} variant="up">
+            <h2 className="text-[2rem] sm:text-[2.6rem] font-extrabold tracking-tight leading-tight" style={{ color: 'var(--text-1)' }}>
+              {content.faq.title}
+            </h2>
+          </Reveal>
         </div>
 
         <div id="faq-list" className="flex flex-col" style={{ borderTop: '1px solid var(--border-mid)' }}>
@@ -23,9 +26,8 @@ export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
             const open = openIndex === index
             const panelId = `faq-panel-${index}`
             const buttonId = `faq-button-${index}`
-            const panelMaxHeight = open ? `${(answerRefs.current[index]?.scrollHeight ?? 0) + 20}px` : '0px'
             return (
-              <Reveal key={item.question} delayMs={80 + index * 70}>
+              <Reveal key={item.question} delayMs={130 + index * 70} variant={itemVariants[index % itemVariants.length]}>
                 <div
                   className="faq-item"
                   style={index < content.faq.items.length - 1 ? { borderBottom: '1px solid var(--border-mid)' } : undefined}
@@ -56,18 +58,17 @@ export function FaqSection({ content, openIndex, onToggle }: FaqSectionProps) {
                     id={panelId}
                     role="region"
                     aria-labelledby={buttonId}
-                    className="faq-body overflow-hidden"
-                    style={{ maxHeight: panelMaxHeight }}
+                    aria-hidden={!open}
+                    className={`faq-body ${open ? 'open' : ''}`}
                   >
-                    <p
-                      ref={(node) => {
-                        answerRefs.current[index] = node
-                      }}
-                      className="text-[0.87rem] sm:text-[0.9rem] leading-relaxed pb-5"
-                      style={{ color: 'var(--text-3)' }}
-                    >
-                      {item.answer}
-                    </p>
+                    <div className="faq-body-inner">
+                      <p
+                        className="text-[0.87rem] sm:text-[0.9rem] leading-relaxed pb-5"
+                        style={{ color: 'var(--text-3)' }}
+                      >
+                        {item.answer}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </Reveal>

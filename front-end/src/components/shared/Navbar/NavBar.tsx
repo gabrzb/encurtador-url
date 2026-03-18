@@ -59,15 +59,15 @@ export function NavBar({
   return (
     <div
       id="navbar-wrapper"
-      className="fixed top-3 left-1/2 -translate-x-1/2 z-50 animate-fade-down"
-      style={{
-        width: scrolled ? '90%' : '96%',
-        maxWidth: scrolled ? '820px' : '1400px',
-      }}
+      className={`fixed top-3 left-1/2 -translate-x-1/2 z-50 navbar-size animate-fade-down ${
+        scrolled ? 'navbar-size-scrolled' : ''
+      }`}
     >
       <nav
         id="navbar-inner"
-        className="flex items-center justify-between px-3 py-2 sm:px-4 sm:py-2.5 rounded-full border shadow-sm"
+        className={`flex items-center justify-between rounded-full border shadow-sm ${
+          scrolled ? 'px-2.5 py-1.5 sm:px-3 sm:py-2' : 'px-3 py-2 sm:px-4 sm:py-2.5'
+        }`}
         style={{
           borderColor: 'var(--border)',
           background: scrolled

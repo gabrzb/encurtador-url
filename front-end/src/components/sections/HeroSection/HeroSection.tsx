@@ -15,7 +15,7 @@ export function HeroSection({
 }: HeroSectionProps) {
   return (
     <section className="hero-wrap relative overflow-hidden px-4 sm:px-6">
-      <div className="w-full max-w-6xl mx-auto pt-24 pb-16 sm:pt-28 sm:pb-20 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div className="hero-layout w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <HeroIntro heroContent={content.hero} />
         <HeroFormCard
           formContent={content.form}

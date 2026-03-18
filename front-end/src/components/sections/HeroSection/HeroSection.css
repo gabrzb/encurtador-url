@@ -26,6 +26,14 @@
   min-height: 100svh;
   display: flex;
   align-items: center;
+  padding-top: 5.5rem;
+  padding-bottom: 3rem;
+}
+
+.hero-layout {
+  width: 100%;
+  padding-top: clamp(1.25rem, 3vh, 2.75rem);
+  padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
 }
 
 .hero-galaxy-btn {
@@ -216,6 +224,19 @@
 
 .hero-stat-countup {
   display: inline-block;
+}
+
+@media (max-width: 1023px) {
+  .hero-wrap {
+    min-height: auto;
+    padding-top: 5.8rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .hero-layout {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

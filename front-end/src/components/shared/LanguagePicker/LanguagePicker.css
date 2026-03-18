@@ -1,3 +1,7 @@
+.lang-wrapper {
+  position: relative;
+}
+
 .lang-btn:hover {
   transform: scale(1.08);
 }

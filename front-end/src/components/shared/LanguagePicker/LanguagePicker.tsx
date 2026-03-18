@@ -44,7 +44,7 @@ export function LanguagePicker({
   }, [open, onClose])
 
   return (
-    <div id="lang-wrapper" ref={wrapperRef} style={{ position: 'fixed', bottom: '20px', right: '72px', zIndex: 100 }}>
+    <div id="lang-wrapper" ref={wrapperRef} className="lang-wrapper">
       <button
         id="lang-btn"
         className="floating-control lang-btn"

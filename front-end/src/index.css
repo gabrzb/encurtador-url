@@ -2,10 +2,14 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/space-grotesk";
 
 @custom-variant dark (&:is(.dark *, [data-theme="dark"] *));
 
 :root {
+  --font-body: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Space Grotesk Variable", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+
   --bg: #efefef;
   --bg-card: #e8e8e8;
   --bg-input: #efefef;
@@ -97,7 +101,31 @@ body {
   background: var(--bg);
   color: var(--text-1);
   transition: background 0.4s ease, color 0.4s ease;
-  font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
+.floating-controls-wrap {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+@media (max-width: 640px) {
+  .floating-controls-wrap {
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    gap: 0.5rem;
+  }
 }
 
 a {
@@ -114,7 +142,7 @@ a {
 }
 
 @theme inline {
-  --font-sans: "Geist Variable", sans-serif;
+  --font-sans: var(--font-body);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border-token);

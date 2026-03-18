@@ -50,8 +50,13 @@ export function FooterSection({ content }: FooterSectionProps) {
                 <p className="font-bold text-[0.75rem] tracking-widest uppercase" style={{ color: 'var(--text-1)' }}>
                   {column.title}
                 </p>
-                {column.links.map((link) => (
-                  <a key={link.href} href={link.href} style={{ color: 'var(--text-3)' }} className="hover:text-[#7c6ffa] transition-colors">
+                {column.links.map((link, linkIndex) => (
+                  <a
+                    key={`${column.title}-${link.label}-${link.href}-${linkIndex}`}
+                    href={link.href}
+                    style={{ color: 'var(--text-3)' }}
+                    className="footer-link-underline hover:text-[#7c6ffa] transition-colors"
+                  >
                     {link.label}
                   </a>
                 ))}
@@ -66,7 +71,12 @@ export function FooterSection({ content }: FooterSectionProps) {
           <p>{content.footer.copyright}</p>
           <div className="flex items-center gap-4 sm:gap-5">
             {content.footer.legal.map((item) => (
-              <a key={item} href="#" className="hover:text-[#7c6ffa] transition-colors" style={{ color: 'var(--text-4)' }}>
+              <a
+                key={item}
+                href="#"
+                className="footer-link-underline hover:text-[#7c6ffa] transition-colors"
+                style={{ color: 'var(--text-4)' }}
+              >
                 {item}
               </a>
             ))}
