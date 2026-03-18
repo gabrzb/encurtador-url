@@ -48,7 +48,7 @@ export function HeroFormCard({
   const shortUrlHref = sanitizeHttpUrl(result?.shortUrl)
   // Hide untrusted payload text whenever the URL is rejected.
   const displayShortUrl = shortUrlHref === '#' ? '' : shortUrlHref
-  const submitLabel = formContent.submit.replace(/\s*→\s*$/, '')
+  const submitLabel = formContent.submit.replace(/\s*(→|->)\s*$/, '')
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -122,7 +122,7 @@ export function HeroFormCard({
             {showError ? (
               // Linked by aria-describedby so screen readers announce the validation reason.
               <p id="url-error" className="text-[0.74rem]" style={{ color: '#f87171' }}>
-                Digite uma URL valida para continuar.
+                {formContent.urlError}
               </p>
             ) : null}
           </div>

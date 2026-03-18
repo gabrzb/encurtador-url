@@ -1,4 +1,5 @@
 export interface LanguageOption {
+  code: string
   flag: string
   label: string
 }
@@ -34,12 +35,17 @@ export interface FooterColumn {
   links: FooterLink[]
 }
 
+export interface FooterSocialAriaLabels {
+  linkedin: string
+  instagram: string
+  facebook: string
+}
+
 export interface ContentData {
   brand: string
+  interfaceControlsAriaLabel: string
   languageAriaLabel: string
   themeToggleAriaLabel: string
-  githubLabel: string
-  githubUrl: string
   loginLabel: string
   menuLabel: string
   closeLabel: string
@@ -66,6 +72,7 @@ export interface ContentData {
     validityLinkHref: string
     copyDefault: string
     copySuccess: string
+    urlError: string
   }
   howItWorks: {
     badge: string
@@ -83,6 +90,7 @@ export interface ContentData {
   }
   footer: {
     description: string
+    socialAriaLabels: FooterSocialAriaLabels
     columns: FooterColumn[]
     copyright: string
     legal: string[]

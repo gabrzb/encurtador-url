@@ -1,19 +1,18 @@
 import type { ContentData } from '@/types/content'
 
-export const content: ContentData = {
+export const ptBrContent: ContentData = {
   brand: 'shun.to',
+  interfaceControlsAriaLabel: 'Controles de interface',
   languageAriaLabel: 'Idioma',
   themeToggleAriaLabel: 'Alternar tema',
-  githubLabel: 'GitHub',
-  githubUrl: 'https://github.com/gabrzb/encurtador-url',
-  loginLabel: 'Entrar',
-  menuLabel: 'Menu',
+  loginLabel: 'Acessar',
+  menuLabel: 'Navegar',
   closeLabel: 'Fechar',
-  pageHeading: 'Página',
+  pageHeading: 'Navegação',
   companyHeading: 'Empresa',
   pageMenu: [
     { href: '#como-funciona', label: 'Como funciona' },
-    { href: '#faq', label: 'FAQ' },
+    { href: '#faq', label: 'Perguntas' },
   ],
   companyMenu: [
     { href: '/sobre', label: 'Sobre nós' },
@@ -36,28 +35,29 @@ export const content: ContentData = {
     subtitle: 'Cole sua URL abaixo e gere o link em um clique.',
     urlLabel: 'Sua URL',
     placeholder: 'https://exemplo.com/url-longa...',
-    submit: 'Encurtar link →',
+    submit: 'Encurtar link ->',
     resultTitle: 'Seu link encurtado',
-    validityTextStart: 'Link válido por 30 dias ·',
+    validityTextStart: 'Link válido por 30 dias -',
     validityLink: 'criar conta para manter',
     validityLinkHref: '/signup',
     copyDefault: 'Copiar',
     copySuccess: 'Copiado ✓',
+    urlError: 'Digite uma URL válida para continuar.',
   },
   howItWorks: {
     badge: 'Como funciona',
     title: 'Simples por design.\nPoderoso por dentro.',
     description:
-      'O shun.to foi construído para quem precisa de agilidade sem abrir mão de controle. Nada de menus complicados — só resultado.',
+      'O shun.to foi construído para quem precisa de agilidade sem abrir mão de controle. Nada de menus complicados, só resultado.',
     steps: [
       {
-        id: '01 — Cole',
+        id: '01 - Cole',
         title: 'Qualquer URL funciona',
         description:
-          'Não importa o tamanho ou o destino — produto, artigo, campanha, planilha. Se tem URL, o shun.to encurta.',
+          'Não importa o tamanho ou o destino: produto, artigo, campanha, planilha. Se tem URL, o shun.to encurta.',
       },
       {
-        id: '02 — Encurte',
+        id: '02 - Encurte',
         title: 'Um clique, pronto',
         description:
           'Nosso motor gera o link em menos de 100ms. Sem espera, sem captcha, sem burocracia. Só o link novo na sua mão.',
@@ -71,7 +71,7 @@ export const content: ContentData = {
     ],
     calloutTitle: 'Pronto pra começar?',
     calloutDescription: 'Sem cadastro obrigatório. Teste agora, grátis.',
-    calloutButton: 'Encurtar meu link →',
+    calloutButton: 'Encurtar meu link ->',
   },
   faq: {
     badge: 'FAQ',
@@ -95,18 +95,23 @@ export const content: ContentData = {
       {
         question: 'Consigo ver quantas pessoas clicaram no meu link?',
         answer:
-          'Sim. Com uma conta gratuita você acessa o painel de analytics com número de cliques, origem geográfica e tipo de dispositivo — tudo em tempo real, sem precisar de Google Analytics.',
+          'Sim. Com uma conta gratuita você acessa o painel de analytics com número de cliques, origem geográfica e tipo de dispositivo, tudo em tempo real, sem precisar de Google Analytics.',
       },
       {
         question: 'Posso usar em campanhas de marketing ou e-mail?',
         answer:
-          'Sim, e é um dos usos mais comuns. Links curtos aumentam a taxa de clique em e-mails e ficam ótimos em posts de redes sociais. A API também permite gerar links em lote para grandes campanhas.',
+          'Sim, e um dos usos mais comuns. Links curtos aumentam a taxa de clique em e-mails e ficam ótimos em posts de redes sociais. A API também permite gerar links em lote para grandes campanhas.',
       },
     ],
   },
   footer: {
     description:
       'Links mais curtos, alcance mais longe. Encurtador gratuito para pessoas e equipes.',
+    socialAriaLabels: {
+      linkedin: 'LinkedIn',
+      instagram: 'Instagram',
+      facebook: 'Facebook',
+    },
     columns: [
       {
         title: 'Produto',
@@ -136,12 +141,12 @@ export const content: ContentData = {
         ],
       },
     ],
-    copyright: '© 2025 shun.to · Todos os direitos reservados.',
+    copyright: '© 2025 shun.to - Todos os direitos reservados.',
     legal: ['Privacidade', 'Termos de uso', 'Cookies'],
   },
   languages: [
-    { flag: '🇧🇷', label: 'Português' },
-    { flag: '🇺🇸', label: 'English' },
-    { flag: '🇪🇸', label: 'Español' },
+    { code: 'pt-br', flag: '🇧🇷', label: 'Português' },
+    { code: 'en', flag: '🇺🇸', label: 'Inglês' },
+    { code: 'es', flag: '🇪🇸', label: 'Espanhol' },
   ],
 }

@@ -5,17 +5,17 @@ import './LanguagePicker.css'
 interface LanguagePickerProps {
   ariaLabel: string
   options: LanguageOption[]
-  selectedFlag: string
+  selectedLanguage: string
   open: boolean
   onToggle: () => void
-  onSelect: (flag: string) => void
+  onSelect: (languageCode: string) => void
   onClose: () => void
 }
 
 export function LanguagePicker({
   ariaLabel,
   options,
-  selectedFlag,
+  selectedLanguage,
   open,
   onToggle,
   onSelect,
@@ -23,6 +23,7 @@ export function LanguagePicker({
 }: LanguagePickerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const dropdownId = 'lang-dropdown'
+  const selectedOption = options.find((option) => option.code === selectedLanguage) ?? options[0]
 
   useEffect(() => {
     if (!open) {
@@ -77,7 +78,7 @@ export function LanguagePicker({
           transition: 'background 0.35s ease,transform 0.2s ease,box-shadow 0.35s ease',
         }}
       >
-        <span id="lang-flag">{selectedFlag}</span>
+        <span id="lang-flag">{selectedOption?.flag ?? '🌐'}</span>
       </button>
       <div
         id={dropdownId}
@@ -99,15 +100,16 @@ export function LanguagePicker({
       >
         {options.map((option, index) => (
           <button
-            key={option.flag}
+            key={option.code}
             className="lang-opt"
             data-flag={option.flag}
             type="button"
             role="option"
-            aria-selected={selectedFlag === option.flag}
+            aria-selected={selectedLanguage === option.code}
             style={index > 0 ? { borderTop: '1px solid var(--border-mid)' } : undefined}
-            onClick={() => onSelect(option.flag)}
+            onClick={() => onSelect(option.code)}
           >
+            <span aria-hidden="true">{option.flag}</span>
             {option.label}
           </button>
         ))}
