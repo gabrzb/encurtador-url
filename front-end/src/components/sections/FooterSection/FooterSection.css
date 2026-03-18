@@ -6,3 +6,33 @@
 .social-btn:hover {
   filter: brightness(0.9);
 }
+
+.footer-link-underline {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+}
+
+.footer-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.18em;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer-link-underline:hover::after,
+.footer-link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-link-underline::after {
+    transition: none;
+  }
+}

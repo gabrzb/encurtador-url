@@ -42,7 +42,7 @@ function App() {
             dotSize={3}
             gap={18}
             baseColor={dark ? '#2e2e2e' : '#c8c8c8'}
-            activeColor={dark ? '#2e2e2e' : '#c8c8c8'}
+            activeColor={dark ? '#763ef9' : '#8f5ee8'}
             proximity={120}
             speedTrigger={220}
             shockRadius={170}
@@ -53,20 +53,22 @@ function App() {
         </div>
       </Suspense>
 
-      <LanguagePicker
-        ariaLabel={content.languageAriaLabel}
-        options={content.languages}
-        selectedFlag={language.selectedFlag}
-        open={language.open}
-        onToggle={language.toggleOpen}
-        onClose={language.close}
-        onSelect={(flag) => {
-          language.setSelectedFlag(flag)
-          language.close()
-        }}
-      />
+      <div className="floating-controls-wrap" role="group" aria-label="Controles de interface">
+        <LanguagePicker
+          ariaLabel={content.languageAriaLabel}
+          options={content.languages}
+          selectedFlag={language.selectedFlag}
+          open={language.open}
+          onToggle={language.toggleOpen}
+          onClose={language.close}
+          onSelect={(flag) => {
+            language.setSelectedFlag(flag)
+            language.close()
+          }}
+        />
 
-      <ThemeToggle ariaLabel={content.themeToggleAriaLabel} onClick={toggleTheme} pressed={dark} />
+        <ThemeToggle ariaLabel={content.themeToggleAriaLabel} onClick={toggleTheme} pressed={dark} />
+      </div>
 
       <NavBar
         content={content}
@@ -91,13 +93,9 @@ function App() {
           />
         </Reveal>
 
-        <Reveal delayMs={80}>
-          <HowItWorksSection content={content} onScrollToInput={scrollToInput} />
-        </Reveal>
+        <HowItWorksSection content={content} onScrollToInput={scrollToInput} />
 
-        <Reveal delayMs={100}>
-          <FaqSection content={content} openIndex={openIndex} onToggle={toggle} />
-        </Reveal>
+        <FaqSection content={content} openIndex={openIndex} onToggle={toggle} />
       </main>
 
       <FooterSection content={content} />

@@ -1,5 +1,21 @@
 .faq-body {
-  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+}
+
+.faq-body.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.faq-body-inner {
+  overflow: hidden;
+}
+
+.faq-item {
+  overflow: clip;
 }
 
 .faq-btn {

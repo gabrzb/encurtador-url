@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { useMemo, type CSSProperties } from 'react'
 import CountUp from '@/components/ui/CountUp/CountUp'
 import type { StatItem } from '@/types/content'
 import { getDownStartValue, parseHeroStatValue } from './heroStatUtils'
@@ -8,11 +8,15 @@ interface HeroStatsProps {
 }
 
 export function HeroStats({ stats }: HeroStatsProps) {
-  const parsedStats = stats.map((stat, index) => ({
-    ...stat,
-    index,
-    parsedValue: parseHeroStatValue(stat.value),
-  }))
+  const parsedStats = useMemo(
+    () =>
+      stats.map((stat, index) => ({
+        ...stat,
+        index,
+        parsedValue: parseHeroStatValue(stat.value),
+      })),
+    [stats],
+  )
 
   return (
     <div className="flex flex-wrap justify-center lg:justify-start gap-5 sm:gap-6 mt-1 animate-fade-up" style={{ '--reveal-delay': '300ms' } as CSSProperties}>

@@ -1,5 +1,5 @@
 import { useInView, useMotionValue, useSpring } from 'motion/react'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 interface CountUpProps {
   to: number
@@ -57,22 +57,23 @@ function CountUp({
 
   const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to))
 
+  const numberFormatter = useMemo(() => {
+    const hasDecimals = maxDecimals > 0
+
+    return new Intl.NumberFormat('en-US', {
+      useGrouping: !!separator,
+      minimumFractionDigits: hasDecimals ? maxDecimals : 0,
+      maximumFractionDigits: hasDecimals ? maxDecimals : 0,
+    })
+  }, [maxDecimals, separator])
+
   const formatValue = useCallback(
     (latest: number) => {
-      // Preserve precision across the whole animation so values do not "jump" formats.
-      const hasDecimals = maxDecimals > 0
-
-      const options: Intl.NumberFormatOptions = {
-        useGrouping: !!separator,
-        minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-        maximumFractionDigits: hasDecimals ? maxDecimals : 0,
-      }
-
-      const formattedNumber = Intl.NumberFormat('en-US', options).format(latest)
+      const formattedNumber = numberFormatter.format(latest)
 
       return separator ? formattedNumber.replace(/,/g, separator) : formattedNumber
     },
-    [maxDecimals, separator],
+    [numberFormatter, separator],
   )
 
   useEffect(() => {

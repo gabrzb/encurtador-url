@@ -45,32 +45,41 @@ function StepIcon({ index }: { index: number }) {
 
 export function HowItWorksSection({ content, onScrollToInput }: HowItWorksSectionProps) {
   const titleLines = content.howItWorks.title.split('\n')
+  const stepVariants: Array<'left' | 'up' | 'right'> = ['left', 'up', 'right']
 
   return (
     <section id="como-funciona" className="px-4 sm:px-6 py-16 sm:py-28" style={{ background: 'var(--bg)', transition: 'background 0.4s ease' }}>
       <div className="w-full max-w-6xl mx-auto">
         <div className="flex flex-col gap-3 mb-12 sm:mb-16">
-          <span className="text-[0.78rem] font-semibold tracking-widest uppercase" style={{ color: '#7c6ffa' }}>
-            {content.howItWorks.badge}
-          </span>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 lg:gap-6">
-            <h2 className="text-[2rem] sm:text-[2.6rem] font-extrabold tracking-tight leading-tight" style={{ color: 'var(--text-1)' }}>
-              {titleLines[0]}
-              <br />
-              {titleLines[1] ?? ''}
-            </h2>
-            <p className="text-[0.9rem] sm:text-[0.95rem] leading-relaxed lg:max-w-sm" style={{ color: 'var(--text-2)' }}>
-              {content.howItWorks.description}
-            </p>
-          </div>
+          <Reveal delayMs={40} variant="left">
+            <span className="text-[0.78rem] font-semibold tracking-widest uppercase" style={{ color: '#7c6ffa' }}>
+              {content.howItWorks.badge}
+            </span>
+          </Reveal>
+
+          <Reveal delayMs={90} variant="up">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 lg:gap-6">
+              <h2 className="text-[2rem] sm:text-[2.6rem] font-extrabold tracking-tight leading-tight" style={{ color: 'var(--text-1)' }}>
+                {titleLines[0]}
+                <br />
+                {titleLines[1] ?? ''}
+              </h2>
+              <p className="text-[0.9rem] sm:text-[0.95rem] leading-relaxed lg:max-w-sm" style={{ color: 'var(--text-2)' }}>
+                {content.howItWorks.description}
+              </p>
+            </div>
+          </Reveal>
         </div>
-        <div className="w-full h-px mb-10 sm:mb-16" style={{ background: 'var(--border-mid)' }} />
+
+        <Reveal delayMs={130} variant="right">
+          <div className="w-full h-px mb-10 sm:mb-16" style={{ background: 'var(--border-mid)' }} />
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3">
           {content.howItWorks.steps.map((step, index) => (
-            <Reveal key={step.id} delayMs={120 + index * 110}>
+            <Reveal key={step.id} delayMs={150 + index * 110} variant={stepVariants[index] ?? 'up'} className="h-full">
               <div
-                className={`step-col ${index < 2 ? 'md:step-divider-v' : ''} flex flex-col gap-4 py-6 md:py-0 ${
+                className={`step-col ${index < 2 ? 'md:step-divider-v' : ''} h-full flex flex-col gap-4 py-6 md:py-0 ${
                   index === 0 ? 'md:pr-12' : index === 1 ? 'md:px-12' : 'md:pl-12'
                 }`}
               >
@@ -91,23 +100,25 @@ export function HowItWorksSection({ content, onScrollToInput }: HowItWorksSectio
           ))}
         </div>
 
-        <div
-          className="mt-14 sm:mt-20 rounded-2xl sm:rounded-3xl px-6 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5"
-          style={{ background: '#111' }}
-        >
-          <div>
-            <p className="text-white text-[1.15rem] sm:text-[1.3rem] font-bold leading-snug">{content.howItWorks.calloutTitle}</p>
-            <p className="text-[#777] text-[0.84rem] mt-1">{content.howItWorks.calloutDescription}</p>
-          </div>
-          <Button
-            type="button"
-            onClick={onScrollToInput}
-            className="no-hover-lift hover:translate-y-0! hover:shadow-none! shrink-0 w-full sm:w-auto px-6 sm:px-7 py-3 rounded-full text-[0.88rem] font-semibold cursor-pointer transition-all duration-150 active:scale-95 text-white text-center h-auto cta-sweep"
-            style={{ background: 'linear-gradient(90deg,#7c6ffa,#3b82f6)' }}
+        <Reveal delayMs={260} variant="pop">
+          <div
+            className="mt-14 sm:mt-20 rounded-2xl sm:rounded-3xl px-6 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5"
+            style={{ background: '#111' }}
           >
-            {content.howItWorks.calloutButton}
-          </Button>
-        </div>
+            <div>
+              <p className="text-white text-[1.15rem] sm:text-[1.3rem] font-bold leading-snug">{content.howItWorks.calloutTitle}</p>
+              <p className="text-[#777] text-[0.84rem] mt-1">{content.howItWorks.calloutDescription}</p>
+            </div>
+            <Button
+              type="button"
+              onClick={onScrollToInput}
+              className="no-hover-lift hover:translate-y-0! hover:shadow-none! shrink-0 w-full sm:w-auto px-6 sm:px-7 py-3 rounded-full text-[0.88rem] font-semibold cursor-pointer transition-all duration-150 active:scale-95 text-white text-center h-auto cta-sweep"
+              style={{ background: 'linear-gradient(90deg,#7c6ffa,#3b82f6)' }}
+            >
+              {content.howItWorks.calloutButton}
+            </Button>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
