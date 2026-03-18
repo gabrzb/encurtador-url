@@ -1,5 +1,4 @@
 import { Suspense, lazy } from 'react'
-import { content } from '@/data/content'
 import { NavBar } from '@/components/shared/Navbar/NavBar'
 import { ThemeToggle } from '@/components/shared/ThemeToggle/ThemeToggle'
 import { LanguagePicker } from '@/components/shared/LanguagePicker/LanguagePicker'
@@ -9,10 +8,12 @@ import { FaqSection } from '@/components/sections/FaqSection/FaqSection'
 import { FooterSection } from '@/components/sections/FooterSection/FooterSection'
 import { Reveal } from '@/components/ui/Reveal/Reveal'
 import { useAppPageState } from '@/hooks/useAppPageState'
+import { useLocalizedContent } from '@/hooks/useLocalizedContent'
 
 const DotGrid = lazy(() => import('@/components/ui/DotGrid/DotGrid'))
 
 function App() {
+  const { content } = useLocalizedContent()
   const {
     dark,
     toggleTheme,
@@ -53,16 +54,16 @@ function App() {
         </div>
       </Suspense>
 
-      <div className="floating-controls-wrap" role="group" aria-label="Controles de interface">
+      <div className="floating-controls-wrap" role="group" aria-label={content.interfaceControlsAriaLabel}>
         <LanguagePicker
           ariaLabel={content.languageAriaLabel}
           options={content.languages}
-          selectedFlag={language.selectedFlag}
+          selectedLanguage={language.currentLanguage}
           open={language.open}
           onToggle={language.toggleOpen}
           onClose={language.close}
-          onSelect={(flag) => {
-            language.setSelectedFlag(flag)
+          onSelect={(languageCode) => {
+            language.setLanguage(languageCode)
             language.close()
           }}
         />
