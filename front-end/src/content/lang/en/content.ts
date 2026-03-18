@@ -5,8 +5,6 @@ export const enContent: ContentData = {
   interfaceControlsAriaLabel: 'Interface controls',
   languageAriaLabel: 'Language',
   themeToggleAriaLabel: 'Toggle theme',
-  githubLabel: 'GitHub',
-  githubUrl: 'https://github.com/gabrzb/encurtador-url',
   loginLabel: 'Sign in',
   menuLabel: 'Browse',
   closeLabel: 'Close',

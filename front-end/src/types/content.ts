@@ -46,8 +46,6 @@ export interface ContentData {
   interfaceControlsAriaLabel: string
   languageAriaLabel: string
   themeToggleAriaLabel: string
-  githubLabel: string
-  githubUrl: string
   loginLabel: string
   menuLabel: string
   closeLabel: string

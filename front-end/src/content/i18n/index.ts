@@ -52,7 +52,9 @@ i18n.on('languageChanged', (language) => {
     window.localStorage.setItem(languageStorageKey, normalizedLanguage)
   }
 
-  document.documentElement.lang = normalizedLanguage
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = normalizedLanguage
+  }
 })
 
 if (typeof document !== 'undefined') {

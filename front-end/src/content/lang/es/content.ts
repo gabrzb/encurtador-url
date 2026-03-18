@@ -5,15 +5,13 @@ export const esContent: ContentData = {
   interfaceControlsAriaLabel: 'Controles de interfaz',
   languageAriaLabel: 'Idioma',
   themeToggleAriaLabel: 'Cambiar tema',
-  githubLabel: 'GitHub',
-  githubUrl: 'https://github.com/gabrzb/encurtador-url',
   loginLabel: 'Acceder',
   menuLabel: 'Navegar',
   closeLabel: 'Cerrar',
-  pageHeading: 'Navegacion',
+  pageHeading: 'Navegación',
   companyHeading: 'Empresa',
   pageMenu: [
-    { href: '#como-funciona', label: 'Como funciona' },
+    { href: '#como-funciona', label: 'Cómo funciona' },
     { href: '#faq', label: 'Preguntas' },
   ],
   companyMenu: [
@@ -39,24 +37,24 @@ export const esContent: ContentData = {
     placeholder: 'https://ejemplo.com/url-larga...',
     submit: 'Acortar enlace ->',
     resultTitle: 'Tu enlace acortado',
-    validityTextStart: 'Enlace valido por 30 dias -',
+    validityTextStart: 'Enlace válido por 30 días -',
     validityLink: 'crear cuenta para conservarlo',
     validityLinkHref: '/signup',
     copyDefault: 'Copiar',
     copySuccess: 'Copiado ✓',
-    urlError: 'Ingresa una URL valida para continuar.',
+    urlError: 'Ingresa una URL válida para continuar.',
   },
   howItWorks: {
-    badge: 'Como funciona',
-    title: 'Simple por diseno.\nPotente por dentro.',
+    badge: 'Cómo funciona',
+    title: 'Simple por diseño.\nPotente por dentro.',
     description:
-      'shun.to fue creado para quienes necesitan velocidad sin perder control. Sin menus complicados, solo resultados.',
+      'shun.to fue creado para quienes necesitan velocidad sin perder control. Sin menús complicados, solo resultados.',
     steps: [
       {
         id: '01 - Pega',
         title: 'Cualquier URL funciona',
         description:
-          'No importa el tamano o destino: producto, articulo, campana, hoja de calculo. Si tiene URL, shun.to la acorta.',
+          'No importa el tamaño o destino: producto, artículo, campaña, hoja de cálculo. Si tiene URL, shun.to la acorta.',
       },
       {
         id: '02 - Acorta',
@@ -71,8 +69,8 @@ export const esContent: ContentData = {
           'Ve cuantos clics recibio tu enlace, de donde vienen y en que dispositivo. Todo en el panel, sin necesidad de GA.',
       },
     ],
-    calloutTitle: 'Listo para empezar?',
-    calloutDescription: 'Sin registro obligatorio. Pruebalo ahora, gratis.',
+    calloutTitle: '¿Listo para empezar?',
+    calloutDescription: 'Sin registro obligatorio. Pruébalo ahora, gratis.',
     calloutButton: 'Acortar mi enlace ->',
   },
   faq: {
@@ -80,35 +78,35 @@ export const esContent: ContentData = {
     title: 'Preguntas frecuentes.',
     items: [
       {
-        question: 'Los enlaces caducan?',
+        question: '¿Los enlaces caducan?',
         answer:
-          'Los enlaces creados sin cuenta permanecen activos por 30 dias. Con una cuenta gratuita los conservas para siempre y ademas puedes editar el destino cuando quieras.',
+          'Los enlaces creados sin cuenta permanecen activos por 30 días. Con una cuenta gratuita los conservas para siempre y además puedes editar el destino cuando quieras.',
       },
       {
-        question: 'Necesito crear una cuenta para usarlo?',
+        question: '¿Necesito crear una cuenta para usarlo?',
         answer:
-          'No. Puedes acortar tu URL directamente en la pagina sin registro. La cuenta es opcional y solo necesaria si quieres analiticas, enlaces permanentes o dominio personalizado.',
+          'No. Puedes acortar tu URL directamente en la página sin registro. La cuenta es opcional y solo necesaria si quieres analíticas, enlaces permanentes o dominio personalizado.',
       },
       {
-        question: 'shun.to es realmente gratis?',
+        question: '¿shun.to es realmente gratis?',
         answer:
-          'Si. El plan gratuito no tiene limite diario de enlaces creados. En el futuro puede existir un plan Pro con funciones avanzadas, pero el acortador basico siempre sera gratis.',
+          'Sí. El plan gratuito no tiene límite diario de enlaces creados. En el futuro puede existir un plan Pro con funciones avanzadas, pero el acortador básico siempre sera gratis.',
       },
       {
-        question: 'Puedo ver cuantas personas hicieron clic en mi enlace?',
+        question: '¿Puedo ver cuántas personas hicieron clic en mi enlace?',
         answer:
-          'Si. Con una cuenta gratuita accedes al panel de analiticas con numero de clics, origen geografico y tipo de dispositivo en tiempo real, sin usar Google Analytics.',
+          'Sí. Con una cuenta gratuita accedes al panel de analíticas con número de clics, origen geográfico y tipo de dispositivo en tiempo real, sin usar Google Analytics.',
       },
       {
-        question: 'Puedo usarlo en campanas de marketing o correo?',
+        question: '¿Puedo usarlo en campañas de marketing o correo?',
         answer:
-          'Si, y es uno de los usos mas comunes. Los enlaces cortos mejoran la tasa de clics en correos y se ven mejor en redes sociales. La API tambien permite generar enlaces en lote para grandes campanas.',
+          'Sí, y es uno de los usos más comunes. Los enlaces cortos mejoran la tasa de clics en correos y se ven mejor en redes sociales. La API también permite generar enlaces en lote para grandes campañas.',
       },
     ],
   },
   footer: {
     description:
-      'Enlaces mas cortos, mayor alcance. Acortador gratuito para personas y equipos.',
+      'Enlaces más cortos, mayor alcance. Acortador gratuito para personas y equipos.',
     socialAriaLabels: {
       linkedin: 'LinkedIn',
       instagram: 'Instagram',
@@ -119,7 +117,7 @@ export const esContent: ContentData = {
         title: 'Producto',
         links: [
           { href: '#', label: 'Acortador' },
-          { href: '#', label: 'Analiticas' },
+          { href: '#', label: 'Analíticas' },
           { href: '#', label: 'Enlaces personalizados' },
           { href: '#', label: 'QR Code' },
         ],
@@ -137,18 +135,18 @@ export const esContent: ContentData = {
         title: 'Developers',
         links: [
           { href: '#', label: 'Partner API' },
-          { href: '#', label: 'Documentacion' },
+          { href: '#', label: 'Documentación' },
           { href: '#', label: 'Estado' },
           { href: '#', label: 'Knowledge Base' },
         ],
       },
     ],
     copyright: '© 2025 shun.to - Todos los derechos reservados.',
-    legal: ['Privacidad', 'Terminos de uso', 'Cookies'],
+    legal: ['Privacidad', 'Términos de uso', 'Cookies'],
   },
   languages: [
-    { code: 'pt-br', flag: '🇧🇷', label: 'Portugues' },
-    { code: 'en', flag: '🇺🇸', label: 'Ingles' },
-    { code: 'es', flag: '🇪🇸', label: 'Espanol' },
+    { code: 'pt-br', flag: '🇧🇷', label: 'Portugués' },
+    { code: 'en', flag: '🇺🇸', label: 'Inglés' },
+    { code: 'es', flag: '🇪🇸', label: 'Español' },
   ],
 }
