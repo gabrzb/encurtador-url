@@ -1,97 +1,107 @@
 # URL Shortener API (Back-end)
 
-API REST para encurtamento de URLs com expiração, redirecionamento e contagem de cliques.
+API REST responsável por criar links curtos, redirecionar para a URL original e expor estatísticas de uso.
 
-Este README documenta apenas a parte de back-end do projeto.
+Este README cobre apenas a seção de back-end.
 
-## Tecnologias
+## Stack
 
 - Java 21
-- Spring Boot 3
+- Spring Boot 3.5
 - Spring Web
 - Spring Data JPA
-- Spring Security (HTTP Basic)
+- Spring Validation
+- Spring Security (HTTP Basic para rotas protegidas)
+- Spring Data Redis
 - PostgreSQL
 - Flyway
 - Maven Wrapper (`mvnw`)
 
 ## Funcionalidades
 
-- Criar URL encurtada com prazo de expiração
-- Redirecionar para a URL original a partir do `shortCode`
-- Listar URLs ativas com estatísticas de acesso (incluindo contagem de cliques)
-- Limpeza agendada de URLs expiradas (diariamente)
-
-## Contagem de cliques e expansão do back-end
-
-A contagem de cliques está implementada como uma funcionalidade base para a evolução do back-end.
-No momento, a API cobre as funcionalidades essenciais do encurtador, e os cliques já registrados podem servir como base para possíveis próximas etapas, como:
-
-- métricas mais detalhadas de uso;
-- relatórios por período;
-- ranking de links mais acessados;
-- sistema de usuários para associação de links por conta, histórico individual e melhor integração com futuras implementações;
-- integração com dashboards e monitoramento.
-
-Dependendo da evolução do projeto, a autenticação também pode ser estendida para suportar perfis de usuário, com recursos como gestão de links por proprietário, permissões e personalização de funcionalidades.
+- Criação de URL encurtada com expiração configurável
+- Redirecionamento por `shortCode`
+- Contagem de cliques em redirecionamentos válidos
+- Listagem de URLs ativas
+- Limpeza agendada de links expirados (03:00 UTC)
+- Rate limit por IP no endpoint de criação
 
 ## Estrutura principal
 
 - `src/main/java/com/api/urlshortener/controller`: endpoints REST
-- `src/main/java/com/api/urlshortener/service`: regras de negócio
+- `src/main/java/com/api/urlshortener/service`: regras de negócio e rate limit
 - `src/main/java/com/api/urlshortener/repository`: acesso a dados
-- `src/main/java/com/api/urlshortener/exception`: tratamento padrão de erros
+- `src/main/java/com/api/urlshortener/config`: segurança, CORS e interceptadores
+- `src/main/java/com/api/urlshortener/exception`: tratamento global de erros
 - `src/main/java/com/api/urlshortener/scheduler`: tarefas agendadas
-- `src/main/resources/application.yaml`: configuração da aplicação
+- `src/main/resources/application.yaml`: configurações da aplicação
+- `src/main/resources/db/migration`: migrações Flyway
 
 ## Configuração
 
-Arquivo: `src/main/resources/application.yaml`
+Arquivo de referência: `src/main/resources/application.yaml`.
 
-Variáveis de ambiente suportadas:
+| Variável | Descrição | Padrão |
+|---|---|---|
+| `SERVER_PORT` | Porta HTTP da API | `8082` |
+| `DB_URL` | URL JDBC do PostgreSQL | `jdbc:postgresql://localhost:5432/url_shortener` |
+| `DB_USERNAME` | Usuário do banco | `postgres` |
+| `DB_PASSWORD` | Senha do banco | `postgres` |
+| `REDIS_HOST` | Host do Redis | `localhost` |
+| `REDIS_PORT` | Porta do Redis | `6379` |
+| `API_BASIC_USERNAME` | Usuário para rotas protegidas | sem padrão |
+| `API_BASIC_PASSWORD` | Senha para rotas protegidas | sem padrão |
+| `APP_BASE_URL` | Base para montar `shortUrl` na resposta | `http://localhost:8082` |
+| `APP_CORS_ALLOWED_ORIGINS` | Origens permitidas no CORS | `http://localhost:5173` |
+| `APP_CREATE_URL_RATE_LIMIT_MAX_REQUESTS` | Limite por IP | `20` |
+| `APP_CREATE_URL_RATE_LIMIT_WINDOW_SECONDS` | Janela em segundos | `60` |
+| `APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN` | Em falha do Redis, permite (`true`) ou bloqueia (`false`) | `false` |
 
-- `SERVER_PORT` (padrão: `8082`)
-- `DB_URL` (padrão: `jdbc:postgresql://localhost:5432/url_shortener`)
-- `APP_BASE_URL` (padrão: `http://localhost:8082`)
+## Como executar localmente
 
-Credenciais HTTP Basic (ambiente de desenvolvimento):
-
-- usuário: `devuser`
-- senha: `devpass123`
-
-## Como executar
-
-1. Acesse a pasta do projeto:
+1. Suba PostgreSQL e Redis (recomendado via Docker Compose na raiz do projeto):
 
 ```powershell
-Set-Location "<project-path>/back-end/url-shortener"
+Set-Location ..\..
+docker compose up -d db redis
 ```
 
-2. Execute a aplicação:
+2. Volte para o back-end e configure as credenciais básicas para subir a API:
+
+```powershell
+Set-Location .\back-end\url-shortener
+$env:API_BASIC_USERNAME = "devuser"
+$env:API_BASIC_PASSWORD = "devpass123"
+```
+
+3. Inicie a aplicação:
 
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
 
-3. Opcional: execute em outra porta:
+4. A API estará em execução em `http://localhost:8082`.
+
+## Comandos úteis
 
 ```powershell
-.\mvnw.cmd spring-boot:run -Dspring-boot.run.arguments="--server.port=8083"
+.\mvnw.cmd test
+.\mvnw.cmd clean package
 ```
 
 ## Endpoints
 
-Regras de acesso:
+| Método | Rota | Acesso | Descrição |
+|---|---|---|---|
+| `POST` | `/api/urls` | Público + rate limit | Cria URL curta |
+| `GET` | `/api/urls` | Público | Lista URLs ativas |
+| `GET` | `/{shortCode}` | Público | Redireciona para URL original |
 
-- Público (sem autenticação): `GET /{shortCode}`, `GET /api/urls`
-- Protegido com HTTP Basic: `POST /api/urls` e demais rotas
+Observação: rotas adicionais em `/api/urls/**` exigem HTTP Basic.
 
-### 1. Criar URL encurtada
+## Exemplo de criação
 
-- Método: `POST`
-- Rota: `/api/urls`
-
-Exemplo de corpo da requisição:
+Requisição:
 
 ```json
 {
@@ -100,65 +110,70 @@ Exemplo de corpo da requisição:
 }
 ```
 
-Resposta esperada: `201 Created`
+Resposta (`201 Created`):
 
-### 2. Redirecionar URL
+```json
+{
+  "shortUrl": "http://localhost:8082/AbC123",
+  "originalUrl": "https://www.exemplo.com/pagina",
+  "expiresAt": "28/03/2026 10:30",
+  "shortCode": "AbC123",
+  "clickCount": 0,
+  "createdAt": "18/03/2026 10:30",
+  "daysUntilExpiry": 10
+}
+```
 
-- Método: `GET`
-- Rota: `/{shortCode}`
+## Validações importantes
 
-Resposta esperada: `302 Found` com header `Location` apontando para a URL original.
+- `originalUrl` obrigatória, máximo de 2048 caracteres e formato `http://` ou `https://`
+- `expirationDays` opcional, quando enviado deve estar entre 1 e 30
+- Campos `owner_user_id` e `ownerUserId` são rejeitados na entrada
 
-### 3. Listar URLs ativas
-
-- Método: `GET`
-- Rota: `/api/urls`
-
-Resposta esperada: `200 OK`
-
-## Exemplos com cURL
-
-Criar URL:
+## Exemplo com cURL
 
 ```bash
-curl -u devuser:devpass123 -X POST http://localhost:8082/api/urls \
+curl -X POST http://localhost:8082/api/urls \
   -H "Content-Type: application/json" \
   -d '{"originalUrl":"https://www.exemplo.com","expirationDays":7}'
 ```
 
-Listar URLs ativas:
+## Padrão de erro
 
-```bash
-curl http://localhost:8082/api/urls
-```
-
-Redirecionar:
-
-```bash
-curl -i http://localhost:8082/ABC123
-```
-
-## Padrão de erros
-
-A API retorna erros no formato:
+Formato base:
 
 ```json
 {
-  "timestamp": "2026-03-10T12:00:00",
+  "timestamp": "2026-03-22T14:30:00",
   "status": 400,
-  "message": "campo: mensagem de validação"
+  "message": "Validation failed"
 }
 ```
 
-Códigos comuns:
+Em erros de validação (`400`), o payload inclui também um array `errors`, com `field` e `message`.
 
-- `400`: erro de validação
-- `404`: código encurtado não encontrado
-- `410`: URL expirada
-- `500`: erro interno inesperado
+Status comuns:
 
-## Observações
+- `400` validação
+- `404` shortCode não encontrado
+- `410` URL expirada
+- `429` rate limit excedido
+- `500` erro interno
 
-- O `shortCode` é gerado com caracteres alfanuméricos (base62).
-- A aplicação evita colisão de código verificando existência antes de persistir.
-- A limpeza de expiradas roda diariamente às 03:00 (fuso horário do servidor).
+## Rate limit (POST /api/urls)
+
+- Chave por IP no Redis
+- Limite padrão: `20` requisições por `60` segundos
+- Com `APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN=true`, falhas no Redis não bloqueiam a criação
+
+## Docker
+
+Para subir apenas o back-end dentro do compose (na raiz do projeto):
+
+```bash
+docker compose up --build backend
+```
+
+## Relação com o projeto principal
+
+Documentação geral: [../../README.md](../../README.md).
