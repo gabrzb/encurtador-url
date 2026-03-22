@@ -138,7 +138,7 @@ Arquivo base: `.env.example`.
 | `APP_CORS_ALLOWED_ORIGINS` | Origens permitidas no CORS | `http://localhost:5173` |
 | `APP_CREATE_URL_RATE_LIMIT_MAX_REQUESTS` | Limite de criações por janela por IP | `20` |
 | `APP_CREATE_URL_RATE_LIMIT_WINDOW_SECONDS` | Janela (segundos) do rate limit | `60` |
-| `APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN` | Permite requisição se Redis cair (`true`) | `true` |
+| `APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN` | Permite requisição se Redis cair (`true`) | `false` |
 | `VITE_API_BASE_URL` | URL base consumida pelo front-end | `http://localhost:8082` |
 | `VITE_DEFAULT_EXPIRATION_DAYS` | Expiração padrão no formulário | `30` |
 
