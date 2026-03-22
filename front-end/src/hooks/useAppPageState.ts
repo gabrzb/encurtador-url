@@ -16,7 +16,7 @@ export function useAppPageState() {
   const { scrolled, menuOpen, toggleMenu, closeMenu } = useNavbarState()
   const language = useLanguagePicker()
   const currentLanguage = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language)
-  const { input, result, showError, setInput, shorten } = useUrlShortener()
+  const { input, result, showError, errorType, isLoading, status, setInput, shorten } = useUrlShortener()
   const { copied, copy } = useClipboard()
   const { openIndex, toggle } = useFaq()
 
@@ -76,6 +76,9 @@ export function useAppPageState() {
     input,
     result,
     showError,
+    errorType,
+    isLoading,
+    status,
     setInput,
     shorten,
     copied,

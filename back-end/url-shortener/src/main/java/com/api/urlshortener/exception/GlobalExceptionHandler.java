@@ -39,6 +39,13 @@ public class GlobalExceptionHandler {
                 .body(buildError(ex.getMessage(), HttpStatus.GONE));
     }
 
+    @ExceptionHandler(RateLimitExceededException.class)
+    public ResponseEntity<?> handleRateLimitExceeded(RateLimitExceededException ex) {
+        return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(buildError(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS));
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         log.warn("Violacao de integridade detectada", ex);

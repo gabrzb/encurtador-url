@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,11 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     @Modifying
     @Query("DELETE FROM Url u WHERE u.expiresAt < :cutoff")
     void deleteByExpiresAtBefore(@Param("cutoff") LocalDateTime cutoff);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Url u SET u.clickCount = u.clickCount + 1 WHERE u.id = :id")
+    int incrementClickCountById(@Param("id") Long id);
 
     List<Url> findByExpiresAtGreaterThanOrderByCreatedAtDesc(LocalDateTime now);
 }

@@ -42,7 +42,10 @@ export const ptBrContent: ContentData = {
     validityLinkHref: '/signup',
     copyDefault: 'Copiar',
     copySuccess: 'Copiado ✓',
+    submitLoading: 'Encurtando...',
     urlError: 'Digite uma URL válida para continuar.',
+    apiError: 'Não foi possível encurtar agora. Tente novamente em instantes.',
+    rateLimitError: 'Muitas tentativas deste IP. Aguarde 1 minuto e tente novamente.',
   },
   howItWorks: {
     badge: 'Como funciona',

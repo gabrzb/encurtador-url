@@ -2,37 +2,21 @@ import type { FormEvent } from 'react'
 import { Button } from '@/components/ui/Button/Button'
 import { Card, CardContent } from '@/components/ui/Card/Card'
 import { Input } from '@/components/ui/Input/Input'
+import { normalizeHttpUrl } from '@/lib/url'
 import type { ContentData } from '@/types/content'
-import type { ShortenResult } from '@/types/url'
+import type { ShortenErrorType, ShortenResult } from '@/types/url'
 
 interface HeroFormCardProps {
   formContent: ContentData['form']
   inputValue: string
   result: ShortenResult | null
   showError: boolean
+  errorType: ShortenErrorType
+  isLoading: boolean
   copied: boolean
   onInputChange: (value: string) => void
-  onShorten: () => void
+  onShorten: () => Promise<void>
   onCopy: () => void
-}
-
-function sanitizeHttpUrl(urlValue: string | null | undefined): string {
-  if (typeof urlValue !== 'string') {
-    return '#'
-  }
-
-  const normalized = urlValue.trim()
-  if (!normalized) {
-    return '#'
-  }
-
-  try {
-    // Only allow http/https to prevent unsafe URI schemes in href.
-    const parsedUrl = new URL(normalized)
-    return /^https?:$/i.test(parsedUrl.protocol) ? parsedUrl.toString() : '#'
-  } catch {
-    return '#'
-  }
 }
 
 export function HeroFormCard({
@@ -40,19 +24,30 @@ export function HeroFormCard({
   inputValue,
   result,
   showError,
+  errorType,
+  isLoading,
   copied,
   onInputChange,
   onShorten,
   onCopy,
 }: HeroFormCardProps) {
-  const shortUrlHref = sanitizeHttpUrl(result?.shortUrl)
+  const shortUrlHref = normalizeHttpUrl(result?.shortUrl) ?? '#'
   // Hide untrusted payload text whenever the URL is rejected.
   const displayShortUrl = shortUrlHref === '#' ? '' : shortUrlHref
   const submitLabel = formContent.submit.replace(/\s*(→|->)\s*$/, '')
+  const errorMessage =
+    errorType === 'validation'
+      ? formContent.urlError
+      : errorType === 'rate-limit'
+        ? formContent.rateLimitError
+        : errorType === 'api'
+          ? formContent.apiError
+          : null
+  const hasError = showError && Boolean(errorMessage)
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onShorten()
+    void onShorten()
   }
 
   return (
@@ -86,7 +81,7 @@ export function HeroFormCard({
               className="flex items-center gap-2 rounded-2xl border px-4 py-3 transition-colors"
               style={{
                 background: 'var(--bg-input)',
-                borderColor: showError ? '#f87171' : 'var(--border)',
+                borderColor: hasError ? '#f87171' : 'var(--border)',
               }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="shrink-0" style={{ opacity: 0.35 }} aria-hidden="true">
@@ -113,27 +108,35 @@ export function HeroFormCard({
                 value={inputValue}
                 onChange={(event) => onInputChange(event.target.value)}
                 placeholder={formContent.placeholder}
-                aria-invalid={showError}
-                aria-describedby={showError ? 'url-error' : undefined}
+                aria-invalid={hasError}
+                aria-describedby={hasError ? 'url-error' : undefined}
+                disabled={isLoading}
                 className="flex-1 bg-transparent text-[0.85rem] sm:text-[0.88rem] outline-none border-none p-0 shadow-none"
                 style={{ color: 'var(--text-1)' }}
               />
             </div>
-            {showError ? (
+            {hasError ? (
               // Linked by aria-describedby so screen readers announce the validation reason.
               <p id="url-error" className="text-[0.74rem]" style={{ color: '#f87171' }}>
-                {formContent.urlError}
+                {errorMessage}
               </p>
             ) : null}
           </div>
 
-          <Button id="shorten-btn" type="submit" className="hero-galaxy-btn no-hover-lift hover:translate-y-0! hover:shadow-none! w-full py-3 rounded-2xl h-auto mt-5">
+          <Button
+            id="shorten-btn"
+            type="submit"
+            disabled={isLoading}
+            className="hero-galaxy-btn no-hover-lift hover:translate-y-0! hover:shadow-none! w-full py-3 rounded-2xl h-auto mt-5"
+          >
             <span className="hero-galaxy-btn__content">
-              <span className="hero-galaxy-btn__text">{submitLabel}</span>
-              <svg className="hero-galaxy-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} aria-hidden="true">
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M13 14h-2a8.999 8.999 0 0 0-7.968 4.81A10.136 10.136 0 0 1 3 18C3 12.477 7.477 8 13 8V3l10 8-10 8v-5z" fill="currentColor" />
-              </svg>
+              <span className="hero-galaxy-btn__text">{isLoading ? formContent.submitLoading : submitLabel}</span>
+              {isLoading ? null : (
+                <svg className="hero-galaxy-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} aria-hidden="true">
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M13 14h-2a8.999 8.999 0 0 0-7.968 4.81A10.136 10.136 0 0 1 3 18C3 12.477 7.477 8 13 8V3l10 8-10 8v-5z" fill="currentColor" />
+                </svg>
+              )}
             </span>
             <span className="hero-galaxy-btn__glow" />
             <span className="hero-galaxy-btn__stars" />

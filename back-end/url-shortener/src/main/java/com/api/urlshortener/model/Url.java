@@ -24,6 +24,10 @@ public class Url {
     private String shortCode;
     @Builder.Default
     private Long clickCount = 0L;
+
+    @Column(name = "owner_user_id")
+    private Long ownerUserId;
+
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
 

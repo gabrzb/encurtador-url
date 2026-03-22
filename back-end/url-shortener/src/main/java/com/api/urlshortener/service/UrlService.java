@@ -8,6 +8,7 @@ import com.api.urlshortener.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -63,12 +64,14 @@ public class UrlService {
                 .shortCode(shortCode)
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusDays(days))
+                .ownerUserId(null)
                 .build();
 
         Url saved = urlRepository.save(url);
         return toResponse(saved);
     }
 
+    @Transactional
     public String resolveUrl(String shortCode){
         Url url = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException(shortCode));
 
@@ -77,8 +80,7 @@ public class UrlService {
         }
 
         // Count only successful redirects for active URLs.
-        url.setClickCount(url.getClickCount() + 1);
-        urlRepository.save(url);
+        urlRepository.incrementClickCountById(url.getId());
         return url.getOriginalUrl();
     }
 

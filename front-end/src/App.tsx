@@ -25,6 +25,8 @@ function App() {
     input,
     result,
     showError,
+    errorType,
+    isLoading,
     setInput,
     shorten,
     copied,
@@ -87,6 +89,8 @@ function App() {
             input={input}
             result={result}
             showError={showError}
+            errorType={errorType}
+            isLoading={isLoading}
             copied={copied}
             onInputChange={setInput}
             onShorten={shorten}

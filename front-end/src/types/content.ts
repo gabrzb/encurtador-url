@@ -72,7 +72,10 @@ export interface ContentData {
     validityLinkHref: string
     copyDefault: string
     copySuccess: string
+    submitLoading: string
     urlError: string
+    apiError: string
+    rateLimitError: string
   }
   howItWorks: {
     badge: string

@@ -42,7 +42,10 @@ export const enContent: ContentData = {
     validityLinkHref: '/signup',
     copyDefault: 'Copy',
     copySuccess: 'Copied ✓',
+    submitLoading: 'Shortening...',
     urlError: 'Enter a valid URL to continue.',
+    apiError: 'Could not shorten the URL right now. Please try again shortly.',
+    rateLimitError: 'Too many requests from this IP. Please retry in 1 minute.',
   },
   howItWorks: {
     badge: 'How it works',
