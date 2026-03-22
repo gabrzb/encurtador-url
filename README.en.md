@@ -138,7 +138,7 @@ Base file: `.env.example`.
 | `APP_CORS_ALLOWED_ORIGINS` | Allowed CORS origins | `http://localhost:5173` |
 | `APP_CREATE_URL_RATE_LIMIT_MAX_REQUESTS` | Create endpoint request limit per IP window | `20` |
 | `APP_CREATE_URL_RATE_LIMIT_WINDOW_SECONDS` | Rate limit window (seconds) | `60` |
-| `APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN` | Allows requests if Redis is down (`true`) | `true` |
+| `APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN` | Allows requests if Redis is down (`true`) | `false` |
 | `VITE_API_BASE_URL` | API base URL consumed by the front-end | `http://localhost:8082` |
 | `VITE_DEFAULT_EXPIRATION_DAYS` | Default expiration used in the form | `30` |
 
