@@ -2,20 +2,24 @@ import { apiRequest } from '@/lib/http/client'
 
 export interface CreateShortUrlPayload {
   originalUrl: string
+  expirationDays: number
 }
 
 export interface CreateShortUrlResponse {
-  id: string
   shortUrl: string
   originalUrl: string
+  expiresAt: string
+  shortCode: string
+  clickCount: number
+  createdAt: string
+  daysUntilExpiry: number
 }
 
 export const urlShortenerApi = {
-  // Temporary endpoint until the backend contract is finalized.
   async createShortUrl(payload: CreateShortUrlPayload): Promise<CreateShortUrlResponse> {
-    return apiRequest<CreateShortUrlResponse>('/api/short-urls', {
+    return apiRequest<CreateShortUrlResponse>('/api/urls', {
       method: 'POST',
-      body: JSON.stringify(payload),
+      body: payload,
     })
   },
 }

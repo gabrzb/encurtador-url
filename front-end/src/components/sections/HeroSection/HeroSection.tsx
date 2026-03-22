@@ -8,6 +8,8 @@ export function HeroSection({
   input,
   result,
   showError,
+  errorType,
+  isLoading,
   copied,
   onInputChange,
   onShorten,
@@ -22,6 +24,8 @@ export function HeroSection({
           inputValue={input}
           result={result}
           showError={showError}
+          errorType={errorType}
+          isLoading={isLoading}
           copied={copied}
           onInputChange={onInputChange}
           onShorten={onShorten}

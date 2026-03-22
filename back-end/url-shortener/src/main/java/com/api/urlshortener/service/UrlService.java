@@ -63,6 +63,7 @@ public class UrlService {
                 .shortCode(shortCode)
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusDays(days))
+                .ownerUserId(null)
                 .build();
 
         Url saved = urlRepository.save(url);

@@ -1,9 +1,47 @@
-export interface ApiRequestOptions extends RequestInit {
+export interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
+  body?: BodyInit | object | null
   query?: Record<string, string | number | boolean | undefined>
 }
 
+interface ApiErrorPayload {
+  message?: string
+}
+
+const DEFAULT_DEV_API_BASE_URL = 'http://localhost:8082'
+
+export class ApiRequestError extends Error {
+  status: number
+  details?: unknown
+
+  constructor(message: string, status: number, details?: unknown) {
+    super(message)
+    this.name = 'ApiRequestError'
+    this.status = status
+    this.details = details
+  }
+}
+
+function resolveApiBaseUrl(): string {
+  const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim()
+
+  if (configuredBaseUrl) {
+    return configuredBaseUrl.replace(/\/$/, '')
+  }
+
+  if (import.meta.env.DEV) {
+    return DEFAULT_DEV_API_BASE_URL
+  }
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin
+  }
+
+  return DEFAULT_DEV_API_BASE_URL
+}
+
 function buildUrl(path: string, query?: ApiRequestOptions['query']): string {
-  const url = new URL(path, window.location.origin)
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  const url = new URL(normalizedPath, `${resolveApiBaseUrl()}/`)
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
@@ -14,6 +52,25 @@ function buildUrl(path: string, query?: ApiRequestOptions['query']): string {
   }
 
   return url.toString()
+}
+
+async function parseResponseBody(response: Response): Promise<unknown> {
+  if (response.status === 204) {
+    return undefined
+  }
+
+  const contentType = response.headers.get('content-type')?.toLowerCase() ?? ''
+
+  if (contentType.includes('application/json')) {
+    return (await response.json()) as unknown
+  }
+
+  if (contentType.includes('text/plain')) {
+    return (await response.text()) as unknown
+  }
+
+  const bodyText = await response.text()
+  return bodyText.length > 0 ? bodyText : undefined
 }
 
 export async function apiRequest<TResponse>(path: string, options: ApiRequestOptions = {}): Promise<TResponse> {
@@ -37,29 +94,28 @@ export async function apiRequest<TResponse>(path: string, options: ApiRequestOpt
     requestHeaders.set('Content-Type', 'application/json')
   }
 
+  const normalizedBody = hasJsonBody
+    ? JSON.stringify(body)
+    : (body as BodyInit | null | undefined)
+
   const response = await fetch(url, {
     ...init,
-    body: hasJsonBody ? JSON.stringify(body) : body,
+    body: normalizedBody,
     headers: requestHeaders,
   })
 
+  const responseBody = await parseResponseBody(response)
+
   if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`)
+    const errorMessage =
+      typeof responseBody === 'object' &&
+      responseBody !== null &&
+      typeof (responseBody as ApiErrorPayload).message === 'string'
+        ? (responseBody as ApiErrorPayload).message!
+        : `API request failed: ${response.status}`
+
+    throw new ApiRequestError(errorMessage, response.status, responseBody)
   }
 
-  if (response.status === 204) {
-    return undefined as TResponse
-  }
-
-  const contentType = response.headers.get('content-type')?.toLowerCase() ?? ''
-
-  if (contentType.includes('application/json')) {
-    return (await response.json()) as TResponse
-  }
-
-  if (contentType.includes('text/plain')) {
-    return (await response.text()) as TResponse
-  }
-
-  return (await response.text()) as TResponse
+  return responseBody as TResponse
 }

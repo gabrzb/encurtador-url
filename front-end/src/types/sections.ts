@@ -1,14 +1,16 @@
 import type { ContentData } from '@/types/content'
-import type { ShortenResult } from '@/types/url'
+import type { ShortenErrorType, ShortenResult } from '@/types/url'
 
 export interface HeroSectionProps {
   content: ContentData
   input: string
   result: ShortenResult | null
   showError: boolean
+  errorType: ShortenErrorType
+  isLoading: boolean
   copied: boolean
   onInputChange: (value: string) => void
-  onShorten: () => void
+  onShorten: () => Promise<void>
   onCopy: () => void
 }
 

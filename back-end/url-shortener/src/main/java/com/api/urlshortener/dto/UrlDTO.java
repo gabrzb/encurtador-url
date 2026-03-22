@@ -1,5 +1,7 @@
 package com.api.urlshortener.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -14,6 +16,25 @@ public class UrlDTO {
         @Min(1)
         @Max(30)
         private Integer expirationDays;
+
+        @JsonIgnore
+        private boolean ownerUserIdPayloadDetected;
+
+        @JsonSetter("owner_user_id")
+        public void setOwnerUserIdFromSnakeCase(Object ignored) {
+            this.ownerUserIdPayloadDetected = true;
+        }
+
+        @JsonSetter("ownerUserId")
+        public void setOwnerUserIdFromCamelCase(Object ignored) {
+            this.ownerUserIdPayloadDetected = true;
+        }
+
+        @AssertTrue(message = "owner_user_id must not be provided")
+        @JsonIgnore
+        public boolean isOwnerUserIdNotProvided() {
+            return !ownerUserIdPayloadDetected;
+        }
     }
 
     @Data

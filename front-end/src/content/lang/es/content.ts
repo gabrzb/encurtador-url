@@ -42,7 +42,10 @@ export const esContent: ContentData = {
     validityLinkHref: '/signup',
     copyDefault: 'Copiar',
     copySuccess: 'Copiado ✓',
+    submitLoading: 'Acortando...',
     urlError: 'Ingresa una URL válida para continuar.',
+    apiError: 'No se pudo acortar la URL ahora. Inténtalo de nuevo en unos instantes.',
+    rateLimitError: 'Demasiadas solicitudes desde esta IP. Inténtalo de nuevo en 1 minuto.',
   },
   howItWorks: {
     badge: 'Cómo funciona',
