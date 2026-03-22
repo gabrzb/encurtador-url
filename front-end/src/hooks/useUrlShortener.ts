@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { ApiRequestError } from '@/lib/http/client'
+import { isValidHttpUrl } from '@/lib/url'
 import { urlShortenerApi } from '@/services/urlShortenerApi'
 import type { ShortenErrorType, ShortenResult, ShortenStatus } from '@/types/url'
 
@@ -13,15 +14,6 @@ function resolveExpirationDays(): number {
   }
 
   return Math.min(30, Math.max(1, Math.trunc(configuredValue)))
-}
-
-function isValidHttpUrl(value: string): boolean {
-  try {
-    const parsedUrl = new URL(value)
-    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:'
-  } catch {
-    return false
-  }
 }
 
 export function useUrlShortener() {

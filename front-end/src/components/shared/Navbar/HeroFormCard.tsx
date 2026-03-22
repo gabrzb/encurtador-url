@@ -2,6 +2,7 @@ import type { FormEvent } from 'react'
 import { Button } from '@/components/ui/Button/Button'
 import { Card, CardContent } from '@/components/ui/Card/Card'
 import { Input } from '@/components/ui/Input/Input'
+import { normalizeHttpUrl } from '@/lib/url'
 import type { ContentData } from '@/types/content'
 import type { ShortenErrorType, ShortenResult } from '@/types/url'
 
@@ -18,25 +19,6 @@ interface HeroFormCardProps {
   onCopy: () => void
 }
 
-function sanitizeHttpUrl(urlValue: string | null | undefined): string {
-  if (typeof urlValue !== 'string') {
-    return '#'
-  }
-
-  const normalized = urlValue.trim()
-  if (!normalized) {
-    return '#'
-  }
-
-  try {
-    // Only allow http/https to prevent unsafe URI schemes in href.
-    const parsedUrl = new URL(normalized)
-    return /^https?:$/i.test(parsedUrl.protocol) ? parsedUrl.toString() : '#'
-  } catch {
-    return '#'
-  }
-}
-
 export function HeroFormCard({
   formContent,
   inputValue,
@@ -49,7 +31,7 @@ export function HeroFormCard({
   onShorten,
   onCopy,
 }: HeroFormCardProps) {
-  const shortUrlHref = sanitizeHttpUrl(result?.shortUrl)
+  const shortUrlHref = normalizeHttpUrl(result?.shortUrl) ?? '#'
   // Hide untrusted payload text whenever the URL is rejected.
   const displayShortUrl = shortUrlHref === '#' ? '' : shortUrlHref
   const submitLabel = formContent.submit.replace(/\s*(→|->)\s*$/, '')
