@@ -6,8 +6,8 @@ spring:
     name: url-shortener
   security:
     user:
-      name: ${API_BASIC_USERNAME:devuser}
-      password: ${API_BASIC_PASSWORD:devpass123}
+      name: ${API_BASIC_USERNAME}
+      password: ${API_BASIC_PASSWORD}
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/url_shortener}
     driver-class-name: org.postgresql.Driver
@@ -35,4 +35,4 @@ app:
     create-url:
       max-requests: ${APP_CREATE_URL_RATE_LIMIT_MAX_REQUESTS:20}
       window-seconds: ${APP_CREATE_URL_RATE_LIMIT_WINDOW_SECONDS:60}
-      fail-open: ${APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN:true}
+      fail-open: ${APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN:false}
