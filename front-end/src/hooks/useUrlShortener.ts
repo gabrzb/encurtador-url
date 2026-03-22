@@ -37,6 +37,7 @@ export function useUrlShortener() {
     const value = input.trim()
 
     if (!isValidHttpUrl(value)) {
+      setResult(null)
       setErrorType('validation')
       return
     }

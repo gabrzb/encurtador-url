@@ -21,16 +21,19 @@ public class IpRateLimiterService {
 
     private final int maxRequests;
     private final long windowMillis;
+    private final boolean failOpen;
     private final StringRedisTemplate redisTemplate;
 
     public IpRateLimiterService(
             StringRedisTemplate redisTemplate,
             @Value("${app.rate-limit.create-url.max-requests:20}") int maxRequests,
-            @Value("${app.rate-limit.create-url.window-seconds:60}") long windowSeconds
+            @Value("${app.rate-limit.create-url.window-seconds:60}") long windowSeconds,
+            @Value("${app.rate-limit.create-url.fail-open:true}") boolean failOpen
     ) {
         this.redisTemplate = redisTemplate;
         this.maxRequests = Math.max(1, maxRequests);
         this.windowMillis = Math.max(1, windowSeconds) * 1000L;
+        this.failOpen = failOpen;
     }
 
     public boolean tryConsume(String ipAddress) {
@@ -45,14 +48,24 @@ public class IpRateLimiterService {
             );
 
             if (requestCount == null) {
-                log.warn("Redis returned null while evaluating rate limit. Allowing request for {}.", normalizedIp);
-                return true;
+                if (failOpen) {
+                    log.warn("Redis returned null while evaluating rate limit. failOpen=true, allowing request for {}.", normalizedIp);
+                    return true;
+                }
+
+                log.warn("Redis returned null while evaluating rate limit. failOpen=false, denying request for {}.", normalizedIp);
+                return false;
             }
 
             return requestCount <= maxRequests;
         } catch (Exception ex) {
-            log.warn("Rate-limit backend unavailable. Allowing request for {}.", normalizedIp, ex);
-            return true;
+            if (failOpen) {
+                log.warn("Rate-limit backend unavailable. failOpen=true, allowing request for {}.", normalizedIp, ex);
+                return true;
+            }
+
+            log.error("Rate-limit backend unavailable. failOpen=false, denying request for {}.", normalizedIp, ex);
+            return false;
         }
     }
 

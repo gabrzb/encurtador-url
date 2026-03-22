@@ -35,3 +35,4 @@ app:
     create-url:
       max-requests: ${APP_CREATE_URL_RATE_LIMIT_MAX_REQUESTS:20}
       window-seconds: ${APP_CREATE_URL_RATE_LIMIT_WINDOW_SECONDS:60}
+      fail-open: ${APP_CREATE_URL_RATE_LIMIT_FAIL_OPEN:true}
