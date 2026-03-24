@@ -20,15 +20,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Public GET and anonymous URL creation are allowed for anonymous usage.
+        // Public short-code redirects and anonymous URL creation are allowed.
         http
                 // Stateless API with Basic auth does not require CSRF tokens.
                 .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/urls", "/*").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/urls").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/urls").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/urls").authenticated()
                         .requestMatchers("/api/urls/**").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());

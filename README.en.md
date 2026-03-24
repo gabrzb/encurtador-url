@@ -145,7 +145,7 @@ Base file: `.env.example`.
 ## Main Endpoints
 
 - `POST /api/urls` creates a short URL (public, with IP rate limiting)
-- `GET /api/urls` lists active URLs
+- `GET /api/urls` lists active URLs (private with HTTP Basic, intended for a future admin section)
 - `GET /{shortCode}` redirects to the original URL
 
 ## Documentation by Section

@@ -94,10 +94,10 @@ $env:API_BASIC_PASSWORD = "devpass123"
 | Method | Route | Access | Description |
 |---|---|---|---|
 | `POST` | `/api/urls` | Public + rate limit | Creates short URL |
-| `GET` | `/api/urls` | Public | Lists active URLs |
+| `GET` | `/api/urls` | Private (HTTP Basic) | Lists active URLs (foundation for future admin section) |
 | `GET` | `/{shortCode}` | Public | Redirects to original URL |
 
-Note: additional routes under `/api/urls/**` require HTTP Basic.
+Note: `GET /api/urls` and additional routes under `/api/urls/**` require HTTP Basic.
 
 ## Create Example
 
